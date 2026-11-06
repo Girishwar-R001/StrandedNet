@@ -3,7 +3,7 @@ import { opApi, useLive } from '../../lib/api'
 import { L, useMap } from '../../lib/leaflet'
 import { Badge, Btn, PageHeader, Panel, ReasonDialog, useAction } from '../ui'
 
-const LINE = { normal: '#5f656e', cancelled: '#eb5757', delayed: '#f0b429', closed: '#eb5757', vehicle: '#4cb782' }
+const LINE = { normal: '#707881', cancelled: '#ba1a1a', delayed: '#d97706', closed: '#ba1a1a', vehicle: '#00855d' }
 
 // Stops are close together in the centre, so each label gets its own side to avoid collisions.
 const LABEL_SIDE: Record<string, 'left' | 'right' | 'top' | 'bottom'> = {
@@ -34,6 +34,7 @@ export default function DisruptionMap() {
   const { data: services } = useLive(opApi, '/network/services')
   const { data: runs } = useLive(opApi, '/network/vehicles')
   const { data: heat } = useLive(opApi, '/op/heatmap')
+  const { data: stress } = useLive(opApi, '/op/stress')
   const [layers, setLayers] = useState({ services: true, vehicles: true, demand: true })
   const [closing, setClosing] = useState<any>(null)
   const { run } = useAction()
@@ -78,16 +79,21 @@ export default function DisruptionMap() {
           const seg = bySegment[edgeKey(v.stops[i], v.stops[i + 1])]
           if (seg) L.polyline(offset(shape(seg, stops), 0.0018 * (index + 1)), { color: LINE.vehicle, weight: 1.5, opacity: 0.9, interactive: false }).addTo(group)
         }
+        // A lost signal moves the marker to its estimated position; it never disappears.
         const first = stops[v.stops[0]]
-        L.marker([first.lat, first.lng], {
-          icon: L.divIcon({ className: '', html: `<span style="font:500 10px 'IBM Plex Mono';background:#4cb782;color:#0e1013;padding:1px 4px;border-radius:2px;white-space:nowrap">${v.id}</span>`, iconSize: [34, 14], iconAnchor: [17, 22] }),
+        const feed = stress?.telemetry.vehicles.find((f: any) => f.vehicle_id === v.id)
+        const at: [number, number] = feed ? [feed.position.lat, feed.position.lng] : [first.lat, first.lng]
+        const color = { good: '#006948', warn: '#b45309', bad: '#ba1a1a' }[(feed?.tone ?? 'good') as 'good' | 'warn' | 'bad']
+        const note = feed?.position.source === 'dead_reckoning' ? ' (estimated)' : ''
+        L.marker(at, {
+          icon: L.divIcon({ className: '', html: `<span style="font:600 10px 'Inter Variable';background:${color};color:#fff;padding:1px 5px;border-radius:4px;white-space:nowrap">${v.id}${note}</span>`, iconSize: [34, 14], iconAnchor: [17, 22] }),
           interactive: false,
         }).addTo(group)
       })
     }
 
     for (const s of stopList) {
-      L.circleMarker([s.lat, s.lng], { radius: 3.5, color: '#e4e6e9', weight: 1.5, fillColor: '#0e1013', fillOpacity: 1 })
+      L.circleMarker([s.lat, s.lng], { radius: 3.5, color: '#0d1c2f', weight: 1.5, fillColor: '#fff', fillOpacity: 1 })
         .bindTooltip(s.name, { permanent: true, direction: LABEL_SIDE[s.id] ?? 'right', offset: LABEL_OFFSET[LABEL_SIDE[s.id] ?? 'right'], className: 'stop-label' })
         .addTo(group)
     }
@@ -95,15 +101,15 @@ export default function DisruptionMap() {
     if (layers.demand && heat) {
       for (const c of heat.cells) {
         L.circleMarker([c.lat, c.lng], {
-          radius: 6 + Math.sqrt(c.affected) * 4, color: c.unresolved ? '#eb5757' : '#f0b429', weight: 1,
-          fillColor: c.unresolved ? '#eb5757' : '#f0b429', fillOpacity: 0.3,
+          radius: 6 + Math.sqrt(c.affected) * 4, color: c.unresolved ? '#ba1a1a' : '#d97706', weight: 1,
+          fillColor: c.unresolved ? '#ba1a1a' : '#d97706', fillOpacity: 0.25,
         }).bindPopup(`<b>${c.affected} affected</b><br/>${c.unresolved} unresolved · ${c.official} official · ${c.carpool} carpool`).addTo(group)
       }
     }
     return () => {
       group.remove()
     }
-  }, [map, stopList, segments, services, runs, heat, layers, stops, bySegment])
+  }, [map, stopList, segments, services, runs, heat, stress, layers, stops, bySegment])
 
   useEffect(() => {
     if (map && stopList) map.fitBounds(L.latLngBounds(stopList.map((s: any) => [s.lat, s.lng])).pad(0.08))
@@ -117,7 +123,7 @@ export default function DisruptionMap() {
     <>
       <PageHeader title="Interactive disruption map" sub="Network state, replacement runs and aggregated demand. Click a road segment to close it." />
       <div className="grid gap-3 lg:grid-cols-[1fr_250px]">
-        <div ref={ref} className="op-map h-[calc(100vh-140px)] min-h-96 rounded border border-op-line" />
+        <div ref={ref} className="op-map h-[calc(100vh-140px)] min-h-96 rounded-xl border border-op-line" />
         <div className="grid content-start gap-3">
           <Panel title="Layers">
             {([['services', 'Service network'], ['vehicles', 'Replacement runs'], ['demand', 'Affected demand']] as const).map(([k, label]) => (
@@ -129,7 +135,7 @@ export default function DisruptionMap() {
               {[['Running', LINE.normal, 'solid'], ['Cancelled service', LINE.cancelled, 'dashed'], ['Delayed service', LINE.delayed, 'solid'], ['Closed road', LINE.closed, 'dotted'], ['Replacement run', LINE.vehicle, 'solid']].map(([label, color, style]) => (
                 <li key={label} className="flex items-center gap-2"><span className="w-6" style={{ borderTop: `2px ${style} ${color}` }} />{label}</li>
               ))}
-              <li className="flex items-center gap-2"><span className="ml-1.5 size-3 rounded-full" style={{ background: '#eb575755', border: '1px solid #eb5757' }} /><span className="ml-1">Contains unresolved demand</span></li>
+              <li className="flex items-center gap-2"><span className="ml-1.5 size-3 rounded-full" style={{ background: '#ba1a1a40', border: '1px solid #ba1a1a' }} /><span className="ml-1">Contains unresolved demand</span></li>
             </ul>
           </Panel>
           <Panel title="Network status">
@@ -160,7 +166,7 @@ export default function DisruptionMap() {
         />
       )}
       {closing?.blocked && (
-        <div className="fixed bottom-4 left-1/2 z-[1500] -translate-x-1/2 rounded border border-op-line-strong bg-op-raised px-3 py-2 text-xs">
+        <div className="fixed bottom-4 left-1/2 z-[1500] -translate-x-1/2 rounded-xl border border-op-line bg-op-raised px-3 py-2 text-xs">
           Already closed. Resolve it from Disruption simulation. <Btn variant="ghost" onClick={() => setClosing(null)}>Dismiss</Btn>
         </div>
       )}

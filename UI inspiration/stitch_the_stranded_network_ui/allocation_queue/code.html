@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>The Stranded Network</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#f8f9ff;}body{overscroll-behavior-y:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-bright": "#f8f9ff", "surface": "#f8f9ff", "primary-container": "#007bb9", "error-container": "#ffdad6", "inverse-on-surface": "#ebf1ff", "surface-variant": "#d5e3fd", "on-tertiary": "#ffffff", "on-surface-variant": "#3f4850", "secondary-fixed-dim": "#bec6e0", "outline-variant": "#bfc7d2", "on-error-container": "#93000a", "surface-container": "#e6eeff", "on-error": "#ffffff", "secondary-fixed": "#dae2fd", "tertiary": "#006948", "primary": "#006194", "on-secondary-fixed": "#131b2e", "on-secondary-fixed-variant": "#3f465c", "on-surface": "#0d1c2f", "on-secondary": "#ffffff", "surface-container-high": "#dde9ff", "secondary": "#565e74", "inverse-primary": "#93ccff", "surface-container-lowest": "#ffffff", "error": "#ba1a1a", "on-primary-container": "#fdfcff", "on-primary-fixed": "#001d31", "on-tertiary-fixed-variant": "#005137", "on-secondary-container": "#5c647a", "tertiary-container": "#00855d", "on-background": "#0d1c2f", "inverse-surface": "#233144", "on-primary": "#ffffff", "background": "#f8f9ff", "on-tertiary-fixed": "#002114", "surface-dim": "#ccdbf4", "surface-tint": "#006398", "primary-fixed-dim": "#93ccff", "secondary-container": "#dae2fd", "surface-container-low": "#eff4ff", "tertiary-fixed": "#85f8c4", "tertiary-fixed-dim": "#68dba9", "surface-container-highest": "#d5e3fd", "primary-fixed": "#cce5ff", "on-primary-fixed-variant": "#004b73", "on-tertiary-container": "#f5fff7", "outline": "#707881" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "gutter-desktop": "1.5rem", "space-md": "1rem", "margin": "1rem", "margin-desktop": "3rem", "space-sm": "0.5rem", "gutter": "1rem", "space-lg": "1.5rem", "space-xl": "2.5rem", "space-xs": "0.25rem", "margin-tablet": "2rem" }, fontFamily: { "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "headline-xl": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "headline-xl-mobile": ["Plus Jakarta Sans"], "label-md": ["Inter"], "body-md": ["Inter"], "label-lg": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "headline-md": ["Plus Jakarta Sans"] }, fontSize: { "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}], "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}], "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}], "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500"}], "headline-xl-mobile": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "700"}], "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}], "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}], "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}], "headline-sm": ["18px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600"}], "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}], "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}] } } } }</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-28 flex flex-col justify-between px-margin py-space-xs"><div class="flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="The Stranded Network Logo" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/ALJJyrCbryuVEm93xcwUG5VxN-6oIraAkJN_4hgWalzE3GGaXrPYmG5vNInoBz80t-EkcE3vl2mQOy9W7aV2746_JK859wF-0C_543HZ0iOpYxXvrHrn6Zzub-3Mdhq9zykAWEVpq-XoZhrAT6D42L-c_U4OXTcBtkePTajBN14vwoSz6C5GUJTsJR2sRmb3LpfpMOUirxCGPCWXI9cEDBvlxYm1CJaN2PXaRGJWXTUjv0s"/><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight">The Stranded Network</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Allocation Queue</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><a aria-label="24/7 Crisis Helpline" class="flex items-center gap-1 min-h-[44px] px-space-sm rounded-full bg-error-container text-on-error-container font-label-md text-label-md active:scale-95 transition-transform" href="tel:18005550199"><span class="material-symbols-outlined text-lg leading-none">support_agent</span><span class="hidden xs:inline">24/7 Help</span></a><div class="min-h-[44px] min-w-[44px] flex items-center justify-center"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-surface-container-highest" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6fv8NLbgJDlBHL9b85ZgFRVk8eOBM_m_0p85TUdVBH8XXtBPwFpF9-3NN6ZewRtVK96KgIVaIB-6zbIKBSRju9V7KHPPDb4drCUAAQhWLT8009vBW6TRIPgBMnNnY_3LJ52XDf5V71XdNTrfLSgoja81tiVJ5QTVBxjkc9FVy6MTuycYF7Li360jF8jaSRVSntizXumEl_NF-7_xduPPX7oiK6t8tm1qpNpISqjQ"/></div></div></div><div class="flex items-center justify-between px-space-sm py-1 rounded-lg bg-surface-container text-on-surface-variant"><div class="flex items-center gap-space-xs min-w-0"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse flex-shrink-0"></span><span class="font-label-sm text-label-sm text-on-surface font-semibold tracking-wide uppercase truncate">INCIDENT ACTIVE • ROUTE 104</span></div><span class="font-label-sm text-label-sm text-tertiary flex items-center gap-0.5 flex-shrink-0 font-medium"><span class="material-symbols-outlined text-sm leading-none">verified_user</span> Protected</span></div></div></header><main class="flex flex-col relative w-full pt-28 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-margin space-y-space-md">
+<!-- Live Pulse Status Badge -->
+<div class="flex items-center justify-between bg-surface-container-high text-on-surface rounded-xl p-space-sm shadow-sm">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="relative flex h-3 w-3 flex-shrink-0">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-tertiary"></span>
+</span>
+<span class="font-label-md text-label-md tracking-wide uppercase text-on-surface-variant font-semibold truncate">
+        System Allocation In Progress
+      </span>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container-lowest text-primary px-space-xs py-0.5 rounded-full font-semibold shadow-xs">
+      Batch #804-A
+    </span>
+</div>
+<!-- Reassuring Hero / Progress Focus -->
+<section class="bg-surface-container-lowest text-on-surface rounded-xl p-space-md shadow-sm relative overflow-hidden">
+<div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-surface-container-low opacity-60 pointer-events-none"></div>
+<div class="flex items-start justify-between gap-space-sm relative z-10">
+<div>
+<p class="font-label-md text-label-md text-primary font-semibold uppercase tracking-wider mb-1">Live Allocation Engine</p>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-bold tracking-tight">Securing Your Recovery Seat</h1>
+</div>
+<div class="flex flex-col items-center justify-center bg-surface-container text-primary rounded-xl p-space-xs min-w-[56px] text-center shadow-xs">
+<span class="font-label-sm text-label-sm uppercase font-semibold text-secondary">Locked</span>
+<span class="font-headline-sm text-headline-sm font-bold tracking-tight" id="lock-countdown">03:48</span>
+</div>
+</div>
+<!-- Active Corridor Counter -->
+<div class="mt-space-md bg-surface-container-low text-on-surface-variant rounded-lg p-space-sm flex items-center gap-space-sm relative z-10">
+<div class="h-8 w-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-lg leading-none">groups</span>
+</div>
+<p class="font-body-sm text-body-sm leading-snug">
+        Assigning verified seats for <strong class="text-on-surface font-semibold">24 affected passengers</strong> across Route Corridor 104.
+      </p>
+</div>
+<!-- Live Step-by-Step Machine -->
+<div class="mt-space-lg relative z-10">
+<h2 class="font-label-md text-label-md uppercase tracking-wider text-secondary font-semibold mb-space-sm">Real-Time State Machine</h2>
+<div class="space-y-space-sm relative">
+<!-- Connecting Line Base -->
+<div class="absolute left-4 top-4 bottom-4 w-0.5 bg-surface-container-highest -z-0"></div>
+<!-- Step 1: Completed -->
+<div class="flex items-start gap-space-sm relative z-10">
+<div class="w-8 h-8 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center flex-shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-base">check</span>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-lg p-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-semibold text-on-surface">Corridor Clustering Completed</span>
+<span class="font-label-sm text-label-sm text-secondary">18:12</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+              Identified 24 passengers bound for Newcastle Central via Hexham bypass.
+            </p>
+</div>
+</div>
+<!-- Step 2: Completed -->
+<div class="flex items-start gap-space-sm relative z-10">
+<div class="w-8 h-8 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center flex-shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-base">check</span>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-lg p-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-semibold text-on-surface">Scoring Wait Time &amp; Party Size</span>
+<span class="font-label-sm text-label-sm text-secondary">18:13</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+              Party of 2 safely paired. Step-free accessibility profile prioritized.
+            </p>
+</div>
+</div>
+<!-- Step 3: Active Processing -->
+<div class="flex items-start gap-space-sm relative z-10">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center flex-shrink-0 shadow-sm ring-4 ring-primary-fixed">
+<span class="material-symbols-outlined text-base animate-spin">sync</span>
+</div>
+<div class="flex-1 bg-primary-fixed text-on-primary-fixed-variant rounded-lg p-space-sm shadow-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-primary-fixed">Atomic Lock &amp; Seat Claim</span>
+<span class="font-label-sm text-label-sm text-primary font-bold uppercase tracking-wider animate-pulse">Running</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-primary-fixed-variant mt-0.5">
+              Holding Coach A8 Bay 4 (Seats 14A &amp; 14B). Establishing confirmed carrier dispatch...
+            </p>
+<!-- Progress Sub-bar -->
+<div class="mt-space-sm w-full bg-surface-container-lowest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full w-3/4 transition-all duration-700 ease-out" id="claim-progress"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Passenger Context & Integrity Snapshot -->
+<section class="bg-surface-container-lowest text-on-surface rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md uppercase tracking-wider text-secondary font-semibold">Your Group Profile</span>
+<span class="font-label-sm text-label-sm text-tertiary bg-tertiary-fixed text-on-tertiary-fixed px-space-xs py-0.5 rounded-full font-semibold">
+        Matched Together
+      </span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary block">Assigned Unit</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold block mt-0.5">Coach A8 (Express)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Carlisle Platform Bay 4</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm text-secondary block">Passengers</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold block mt-0.5">2 Tickets Linked</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Step-free access flag</span>
+</div>
+</div>
+</section>
+<!-- Visual Fleet Radar Placeholder -->
+<section class="bg-surface-container-lowest text-on-surface rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-space-xs">
+<div>
+<h3 class="font-headline-sm text-headline-sm font-semibold">Corridor Dispatch Radar</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Live visual of backup coaches heading into station</p>
+</div>
+<span class="material-symbols-outlined text-primary">minor_crash</span>
+</div>
+<div class="relative w-full h-36 rounded-lg overflow-hidden mt-space-sm bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Modern high contrast transportation operations map screen showing digital routing corridors, blue transit path highlights, calm ambient lighting, and GPS locator points on a simplified road grid system with sleek Scandinavian minimal design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOapEv2f5WUWtZxBCTRBRJ92daNFlDEAxRylxwhlHxivAO6Gy4wv2MwLbpKY5RHf17VjdWlb0x8iLH2W8mUkkqjgaDnnq477R8BO71kMpq98xm3FBnxdVHxkcw_Lhyr72wXl6txiNwV0jSytyYsrkonRqYUE4dyP3IexRUam5hgUuuC-qd1HdmdQLDOq9WHZyQ9nCw2xDd07xk2FcTt1D4i6VL4Fuyla2NslDGDsI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/60 via-transparent to-transparent flex items-end p-space-sm">
+<div class="flex items-center gap-space-xs text-surface-bright font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed animate-ping"></span>
+<span>Coach A8 ETA: 4 mins to Carlisle Bay 4</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Algorithmic Transparency Card (Accordion) -->
+<section class="bg-surface-container-lowest text-on-surface rounded-xl p-space-md shadow-sm">
+<button class="w-full flex items-center justify-between text-left min-h-[44px]" id="transparency-toggle" type="button">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-xl">balance</span>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">How Allocation Priority Works</h3>
+</div>
+<span class="material-symbols-outlined text-secondary transition-transform duration-200" id="transparency-chevron">expand_more</span>
+</button>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+      We believe in 100% radical fairness. Recovery seats are governed by an open ethical algorithm, not who clicks fastest.
+    </p>
+<!-- 4 Transparent Scoring Factors -->
+<div class="mt-space-md space-y-space-sm" id="transparency-content">
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-lg">accessible</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Accessibility &amp; Mobility Needs</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Guaranteed dedicated vehicle matching first. High-clearance and wheelchair-ready vehicles lock unconditionally.
+          </p>
+</div>
+</div>
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-lg">hourglass_top</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Disruption Wait Time</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Weighted by original arrival ETA slippage. Passengers stranded longest on platforms clear in priority order.
+          </p>
+</div>
+</div>
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-lg">group_work</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Party Size Integrity</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Zero family splitting. Accommodates travelling companions and dependents together onto matching capacity bays.
+          </p>
+</div>
+</div>
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-lg">lock_clock</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Fair FIFO Atomic Locks</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Server-held reservation tokens prevent race conditions, rapid refresh battles, or lost claims.
+          </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Calming Passenger Reassurance Banner -->
+<aside class="bg-secondary-fixed text-on-secondary-fixed rounded-xl p-space-md shadow-sm">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-2xl flex-shrink-0 mt-0.5">verified</span>
+<div class="space-y-1">
+<h4 class="font-label-lg text-label-lg font-bold text-on-secondary-fixed">Please do not refresh your browser</h4>
+<p class="font-body-sm text-body-sm text-on-secondary-fixed-variant leading-relaxed">
+          Your reservation lock is active for the next 4 minutes. In the rare event of sudden corridor capacity exhaustion, our verified <strong>Carpool Fallback</strong> activates automatically with pre-cleared local drivers.
+        </p>
+</div>
+</div>
+</aside>
+<!-- Secondary Actions & Station Support -->
+<footer class="pt-space-xs pb-space-lg flex flex-col items-center gap-space-sm">
+<a class="w-full flex items-center justify-center gap-space-xs min-h-[48px] py-space-sm px-space-md rounded-lg bg-surface-container text-on-surface font-label-lg text-label-lg active:scale-98 transition-transform shadow-xs" href="tel:0800042014">
+<span class="material-symbols-outlined text-xl text-secondary">room_service</span>
+<span>Need Station Staff? Call Desk (Bay 1)</span>
+</a>
+<span class="font-label-sm text-label-sm text-secondary text-center">
+      Incident Protocol Route 104 • Carlisle Hub Terminal
+    </span>
+</footer>
+</div>
+<script>
+  // Countdown Timer Micro-interaction
+  let totalSeconds = 228; // 3m 48s
+  const countdownEl = document.getElementById('lock-countdown');
+  const timer = setInterval(() => {
+    if (totalSeconds <= 0) {
+      clearInterval(timer);
+      if (countdownEl) countdownEl.innerText = "00:00";
+      return;
+    }
+    totalSeconds--;
+    const mins = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+    const secs = (totalSeconds % 60).toString().padStart(2, '0');
+    if (countdownEl) {
+      countdownEl.innerText = `${mins}:${secs}`;
+    }
+  }, 1000);
+
+  // Accordion Toggle for Algorithmic Transparency
+  const toggleBtn = document.getElementById('transparency-toggle');
+  const content = document.getElementById('transparency-content');
+  const chevron = document.getElementById('transparency-chevron');
+
+  if (toggleBtn && content && chevron) {
+    toggleBtn.addEventListener('click', () => {
+      const isHidden = content.classList.contains('hidden');
+      if (isHidden) {
+        content.classList.remove('hidden');
+        chevron.style.transform = 'rotate(0deg)';
+      } else {
+        content.classList.add('hidden');
+        chevron.style.transform = 'rotate(-90deg)';
+      }
+    });
+  }
+
+  // Visual sub-bar animation jitter to simulate genuine atomic locking throughput
+  const progressBar = document.getElementById('claim-progress');
+  if (progressBar) {
+    let current = 75;
+    setInterval(() => {
+      if (current < 94) {
+        current += Math.random() * 4;
+        progressBar.style.width = `${Math.min(current, 95)}%`;
+      }
+    }, 2400);
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-lowest/95 backdrop-blur-xl shadow-[0_-2px_12px_rgba(15,23,42,0.06)]" data-active-classes="text-primary font-semibold"><div class="flex justify-around items-center h-20 px-space-xs max-w-md mx-auto"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="incident-check-in" href="#"><span class="material-symbols-outlined text-xl mb-0.5">how_to_reg</span><span class="font-label-sm text-[10px] leading-tight text-center">Check-In</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="ranked-options" href="#"><span class="material-symbols-outlined text-xl mb-0.5">alt_route</span><span class="font-label-sm text-[10px] leading-tight text-center">Options</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 transition-colors text-primary font-semibold" data-path="allocation-queue" href="#"><span class="material-symbols-outlined text-xl mb-0.5">pending_actions</span><span class="font-label-sm text-[10px] leading-tight text-center">Queue</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="confirmed-ticket" href="#"><span class="material-symbols-outlined text-xl mb-0.5">confirmation_number</span><span class="font-label-sm text-[10px] leading-tight text-center">Ticket</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="carpool-fallback" href="#"><span class="material-symbols-outlined text-xl mb-0.5">directions_car</span><span class="font-label-sm text-[10px] leading-tight text-center">Carpool</span></a></div></nav></body></html>

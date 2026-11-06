@@ -49,7 +49,7 @@ def test_unmet_demand_is_published_only_after_official_allocation(db, op):
 def test_compatible_parties_are_aggregated_into_one_listing(db, op):
     _prepare(db, op)
     rows = [r for r in db.query(CarpoolRequest) if r.pickup_area == "Hebbal area" and r.destination_name == "Whitefield"]
-    assert len(rows) == 1 and rows[0].passenger_count == 3
+    assert len(rows) == 1 and rows[0].passenger_count == 4
 
 
 def test_three_seat_offer_never_takes_a_group_of_four(db, op):
@@ -182,10 +182,13 @@ def test_one_party_declining_releases_only_their_seats(client, db, op, as_user):
     client.post(f"{url}/passenger-response", json={"accept": False}, headers=as_user("vikram"))
     client.post(f"{url}/passenger-response", json={"accept": True}, headers=as_user("asha"))
     db.expire_all()
-    m = _match(db)
+    m = db.get(CarpoolMatch, m.id)
     assert m.matched_seats == 2 and m.status == "awaiting_provider"
-    assert db.get(CarpoolOffer, m.offer_id).reserved_seats == 2
     assert journey(db, "P-02").status == "affected"
+    # The freed seat goes straight to the next compatible party, as its own proposal.
+    newest = _match(db)
+    assert newest.id != m.id and [x.journey.ref for x in newest.members] == ["P-14"]
+    assert db.get(CarpoolOffer, m.offer_id).reserved_seats == 3
 
 
 def test_strangers_cannot_answer_a_match(client, db, op, as_user):
@@ -297,8 +300,8 @@ def test_official_seat_withdraws_a_party_from_pending_carpool(client, db, op, as
     _offer(client, as_user("meera"))
     m = _match(db)
     j = journey(db, "P-02")
-    v = db.get(Vehicle, "RV-2")
-    v.stops = ["HEB", "WFD"]
+    v = Vehicle(id="RV-9", vehicle_type="Van", capacity=4, available_seats=4, stops=["HEB", "WFD"], ready_min=hm("18:05"))
+    db.add(v)
     db.commit()
     allocation.create_confirmed(db, j, v, Network.load(db), "Extra run added", op)
     db.commit()

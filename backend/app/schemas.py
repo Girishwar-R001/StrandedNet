@@ -134,3 +134,19 @@ class RespondIn(BaseModel):
 
 class CancelIn(BaseModel):
     reason: str = Field(default="", max_length=400)
+
+
+class TelemetryIn(BaseModel):
+    """Deliberately unconstrained on seats: the sanitizer, not validation, must see bad readings."""
+    vehicle_id: str
+    sensor_id: str = Field(default="primary", max_length=40)
+    timestamp: float | None = None
+    available_seats: int | None = None
+    lat: float | None = None
+    lng: float | None = None
+    status: Literal["online", "offline"] | None = None
+
+
+class ConflictDecisionIn(BaseModel):
+    decision: Literal["keep", "withdraw"]
+    reason: str = Field(min_length=3, max_length=400)

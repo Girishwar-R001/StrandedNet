@@ -58,6 +58,18 @@ def score(j: Journey, v: Vehicle, arrival: int, options: list[JourneyOption],
     return round(total, 3), breakdown, outcome
 
 
+def triage_note(j: Journey, breakdown: dict, group_label: str | None, reduction_pct: int | None) -> str:
+    """Why this party won a scarce seat. Names its strongest factor and any accessibility need."""
+    if not reduction_pct:
+        return ""
+    label, value = max(((f["label"], f["value"]) for f in breakdown["factors"].values()), key=lambda f: f[1])
+    needs = {"wheelchair": "wheelchair requirement", "step_free": "step-free requirement"}
+    parts = [needs[r] for r in j.requirements if r in needs]
+    parts.append(f"highest {label.lower()} score ({value:.2f})")
+    subject = f"Group {group_label}" if group_label else j.ref
+    return f"Prioritised under {reduction_pct}% fleet reduction: {subject} has {' + '.join(parts)}. "
+
+
 def describe(j: Journey, v: Vehicle, total: float, breakdown: dict, outcome: str, group_label: str | None) -> str:
     """Human-readable reason, naming the factors that actually drove the score."""
     inputs = breakdown["inputs"]

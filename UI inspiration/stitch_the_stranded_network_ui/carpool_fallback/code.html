@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>The Stranded Network</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#f8f9ff;}body{overscroll-behavior-y:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-bright": "#f8f9ff", "surface": "#f8f9ff", "primary-container": "#007bb9", "error-container": "#ffdad6", "inverse-on-surface": "#ebf1ff", "surface-variant": "#d5e3fd", "on-tertiary": "#ffffff", "on-surface-variant": "#3f4850", "secondary-fixed-dim": "#bec6e0", "outline-variant": "#bfc7d2", "on-error-container": "#93000a", "surface-container": "#e6eeff", "on-error": "#ffffff", "secondary-fixed": "#dae2fd", "tertiary": "#006948", "primary": "#006194", "on-secondary-fixed": "#131b2e", "on-secondary-fixed-variant": "#3f465c", "on-surface": "#0d1c2f", "on-secondary": "#ffffff", "surface-container-high": "#dde9ff", "secondary": "#565e74", "inverse-primary": "#93ccff", "surface-container-lowest": "#ffffff", "error": "#ba1a1a", "on-primary-container": "#fdfcff", "on-primary-fixed": "#001d31", "on-tertiary-fixed-variant": "#005137", "on-secondary-container": "#5c647a", "tertiary-container": "#00855d", "on-background": "#0d1c2f", "inverse-surface": "#233144", "on-primary": "#ffffff", "background": "#f8f9ff", "on-tertiary-fixed": "#002114", "surface-dim": "#ccdbf4", "surface-tint": "#006398", "primary-fixed-dim": "#93ccff", "secondary-container": "#dae2fd", "surface-container-low": "#eff4ff", "tertiary-fixed": "#85f8c4", "tertiary-fixed-dim": "#68dba9", "surface-container-highest": "#d5e3fd", "primary-fixed": "#cce5ff", "on-primary-fixed-variant": "#004b73", "on-tertiary-container": "#f5fff7", "outline": "#707881" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "gutter-desktop": "1.5rem", "space-md": "1rem", "margin": "1rem", "margin-desktop": "3rem", "space-sm": "0.5rem", "gutter": "1rem", "space-lg": "1.5rem", "space-xl": "2.5rem", "space-xs": "0.25rem", "margin-tablet": "2rem" }, fontFamily: { "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "headline-xl": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "headline-xl-mobile": ["Plus Jakarta Sans"], "label-md": ["Inter"], "body-md": ["Inter"], "label-lg": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "headline-md": ["Plus Jakarta Sans"] }, fontSize: { "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}], "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}], "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}], "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500"}], "headline-xl-mobile": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "700"}], "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}], "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}], "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}], "headline-sm": ["18px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600"}], "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}], "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}] } } } }</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-28 flex flex-col justify-between px-margin py-space-xs"><div class="flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="The Stranded Network Logo" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/ALJJyrCbryuVEm93xcwUG5VxN-6oIraAkJN_4hgWalzE3GGaXrPYmG5vNInoBz80t-EkcE3vl2mQOy9W7aV2746_JK859wF-0C_543HZ0iOpYxXvrHrn6Zzub-3Mdhq9zykAWEVpq-XoZhrAT6D42L-c_U4OXTcBtkePTajBN14vwoSz6C5GUJTsJR2sRmb3LpfpMOUirxCGPCWXI9cEDBvlxYm1CJaN2PXaRGJWXTUjv0s"/><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight">The Stranded Network</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Carpool Fallback</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><a aria-label="24/7 Crisis Helpline" class="flex items-center gap-1 min-h-[44px] px-space-sm rounded-full bg-error-container text-on-error-container font-label-md text-label-md active:scale-95 transition-transform" href="tel:18005550199"><span class="material-symbols-outlined text-lg leading-none">support_agent</span><span class="hidden xs:inline">24/7 Help</span></a><div class="min-h-[44px] min-w-[44px] flex items-center justify-center"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-surface-container-highest" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6fv8NLbgJDlBHL9b85ZgFRVk8eOBM_m_0p85TUdVBH8XXtBPwFpF9-3NN6ZewRtVK96KgIVaIB-6zbIKBSRju9V7KHPPDb4drCUAAQhWLT8009vBW6TRIPgBMnNnY_3LJ52XDf5V71XdNTrfLSgoja81tiVJ5QTVBxjkc9FVy6MTuycYF7Li360jF8jaSRVSntizXumEl_NF-7_xduPPX7oiK6t8tm1qpNpISqjQ"/></div></div></div><div class="flex items-center justify-between px-space-sm py-1 rounded-lg bg-surface-container text-on-surface-variant"><div class="flex items-center gap-space-xs min-w-0"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse flex-shrink-0"></span><span class="font-label-sm text-label-sm text-on-surface font-semibold tracking-wide uppercase truncate">INCIDENT ACTIVE • ROUTE 104</span></div><span class="font-label-sm text-label-sm text-tertiary flex items-center gap-0.5 flex-shrink-0 font-medium"><span class="material-symbols-outlined text-sm leading-none">verified_user</span> Protected</span></div></div></header><main class="flex flex-col relative w-full pt-28 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="px-margin space-y-space-md py-space-sm">
+<!-- Calm Reassurance Notification Banner -->
+<section class="bg-surface-container-high rounded-xl p-space-md shadow-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center flex-shrink-0 text-primary shadow-sm">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">handshake</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-semibold">Tier 2 Activation</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">• Route 104 Corridor</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mt-0.5 leading-snug">Official Buses at Capacity • Community Safety Net Activated</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Connecting stranded travelers with verified regional commuters heading directly north. You remain fully protected under the Stranded Travel Guarantee.</p>
+</div>
+</div>
+</section>
+<!-- Main Verified Driver Card -->
+<section class="bg-surface-container-lowest rounded-xl shadow-md overflow-hidden" id="match-card">
+<!-- Status Top Strip -->
+<div class="bg-tertiary px-space-md py-space-xs flex items-center justify-between text-on-tertiary">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed animate-ping"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wide truncate">Instant Match Available • 8 Min Departure</span>
+</div>
+<span class="font-label-sm text-label-sm bg-tertiary-container px-2 py-0.5 rounded-full text-on-tertiary-container flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-sm leading-none">verified</span> Vetted
+        </span>
+</div>
+<div class="p-space-md space-y-space-md">
+<!-- Driver Profile Header -->
+<div class="flex items-center gap-space-md">
+<div class="relative flex-shrink-0">
+<img class="w-16 h-16 rounded-full object-cover shadow-sm" data-alt="A friendly middle-aged male commuter in a warm dark jacket with a calm reassuring smile, soft natural lighting at an outdoor transit station bay, professional portrait photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdClBthKWj2bDssBYH_mZRhTBmEBJjqVK6riaV-TBON5M6X_cj1HU16eKosS2JVLfextm5ysTKaIFNv1zxa_VXJNRVr2Q4TxBLUJI0XzH0MASQPsglYs3axMHG_0LO-vXaSlYx0bYZV6Az8aIBlx5fwbhP-HV71hG1eN8HqKsNyPGtKR-Rjuu49TnKDT-D8UjcsEC0geuCzxKgd4Cg1ENT1i8LKf2Y1gATniV1GKQ"/>
+<div class="absolute -bottom-1 -right-1 bg-tertiary text-on-tertiary p-1 rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-1.5 flex-wrap">
+<h3 class="font-headline-sm text-headline-sm text-on-surface truncate">David M.</h3>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container">Verified Commuter</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-0.5">Silver Skoda Octavia Estate</p>
+<div class="flex items-center gap-space-sm mt-1.5 flex-wrap text-on-surface-variant">
+<div class="flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-md">
+<span class="material-symbols-outlined text-sm text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">4.9</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">(18 rides)</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary flex items-center gap-0.5 font-medium">
+<span class="material-symbols-outlined text-sm">shield</span> ID &amp; DBS Cleared
+              </span>
+</div>
+</div>
+</div>
+<!-- Vehicle & Visual Snapshot Strip -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="relative rounded-lg overflow-hidden h-24 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A clean modern silver estate station wagon car parked under bright station shelter lighting, clean side profile, crisp evening lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpvjT_RXXjqW4_9FJRTZR-IArIsCvj_hNHBeCX4OasB_4N6WLrJCR3MohG0viHIoHqSsid_yNnQGs0BucWJWKwevUatUdwPDAGjAs8msd8LyNgG6ySTelmknth7LJVuVs5tX4GO0PHMVtca9IrIUMm9YgG_jQX3_iFzYzn0_h3Xc9n2UmY5CSNO_Q01QsJgKZPEB3cIwHSsrZ8lAUTy1S0pzuhvtr8r5AgvUN8vRk"/>
+<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-inverse-surface/80 via-inverse-surface/40 to-transparent p-1.5">
+<p class="font-label-sm text-label-sm text-inverse-on-surface truncate">5-Star Safety Rated Wagon</p>
+</div>
+</div>
+<div class="relative rounded-lg overflow-hidden h-24 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Station safe pickup zone bay with dedicated passenger waiting area, overhead signage, clearly illuminated platform safety spot, evening" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoqUhZ9NQxXW-tv6xLw6NAkP9o0oHwDuhwNmko3hHIxr9Jnbf5Lg7UsRA_xB45rQcucZqNhIUwwNc4BJGRpOP6Md-MMLMfX-r7o7xcczBkdxWH7u1cREb84RDcE4ogZklCv5kY_W84BT-x4T_HLRSupS-91GaCwV8sUWU2avyDeuec736e1vffJiPu-foNd-MBn0J9DtZ60N4PV7dkVVV1rSywyjR62W1yHZ9N3dw"/>
+<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-inverse-surface/80 via-inverse-surface/40 to-transparent p-1.5">
+<p class="font-label-sm text-label-sm text-inverse-on-surface truncate">Zone B • Station Marshal Post</p>
+</div>
+</div>
+</div>
+<!-- Trip Details Grid -->
+<div class="bg-surface-container-low rounded-lg p-space-sm space-y-space-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-primary flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-base">airline_seat_recline_extra</span>
+</div>
+<div class="min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-surface font-semibold block">Capacity Match</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">2 spare seats open in rear • Ample boot space for luggage</p>
+</div>
+</div>
+<div class="flex items-start gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-primary flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-base">route</span>
+</div>
+<div class="min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-surface font-semibold block">Corridor Drop-offs</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Passing directly by Newcastle Central Station &amp; Jesmond Interchange</p>
+</div>
+</div>
+<div class="flex items-start gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-primary flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-base">schedule</span>
+</div>
+<div class="min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-surface font-semibold block">Departure Window</span>
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-label-md text-label-md text-on-surface font-bold">18:22 (in 8 mins)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">• Safe Zone B (Bay 3)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Dual Opt-In Privacy Vault -->
+<div class="bg-surface-container rounded-lg p-space-md space-y-space-xs">
+<div class="flex items-center gap-space-xs text-primary">
+<span class="material-symbols-outlined text-lg">lock</span>
+<span class="font-label-md text-label-md uppercase tracking-wider font-semibold">Dual Opt-In Vault Protected</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">David's registration plate, live mobile direct line, and real-time GPS beacon unlock solely after you mutual-accept. Your phone and travel voucher remain anonymous.</p>
+<div class="pt-1 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">David has pre-authorized acceptance • Waiting on your sign-off</span>
+</div>
+</div>
+<!-- Action Area -->
+<div class="space-y-space-xs pt-1">
+<button class="w-full min-h-[48px] bg-primary text-on-primary rounded-xl font-label-lg text-label-lg px-space-md py-3 flex items-center justify-center gap-space-xs active:scale-[0.98] transition-transform shadow-md" id="opt-in-button" onclick="handleOptIn()">
+<span class="material-symbols-outlined text-xl">how_to_reg</span>
+<span>Accept Carpool Seat with David M.</span>
+</button>
+<div class="flex items-center justify-center gap-1.5 py-1 text-center">
+<span class="material-symbols-outlined text-sm text-tertiary" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold">100% Covered by Transit Disruption Fund • £0.00 Passenger Fare</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Confirmation Modal Card (Hidden State Managed via JS) -->
+<section class="hidden bg-surface-container-lowest rounded-xl p-space-md shadow-lg space-y-space-md" id="confirmed-state">
+<div class="flex items-center gap-space-sm">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed shadow-sm">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="min-w-0 flex-1">
+<span class="font-label-sm text-label-sm text-tertiary uppercase tracking-wider font-bold">Dual Match Confirmed</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Meet David at Safe Zone B</h3>
+</div>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg space-y-1">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Unlocked Plate ID:</span>
+<span class="font-label-md text-label-md text-on-surface font-mono font-bold bg-surface-container-lowest px-2 py-0.5 rounded">NK69 EBO</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Driver Contact:</span>
+<span class="font-label-md text-label-md text-primary font-semibold">+44 7700 900481 (Masked Relay)</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Safe Verification PIN:</span>
+<span class="font-label-md text-label-md text-tertiary font-mono font-bold">8492</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="flex-1 min-h-[44px] bg-primary text-on-primary rounded-lg font-label-md text-label-md flex items-center justify-center gap-1" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+<span class="material-symbols-outlined text-lg">navigation</span> Guide to Bay 3
+        </button>
+<button class="min-h-[44px] px-space-sm bg-surface-container text-on-surface-variant rounded-lg font-label-md text-label-md" onclick="resetOptIn()">
+          Dismiss
+        </button>
+</div>
+</section>
+<!-- Alternative Options & Safety Controls -->
+<div class="space-y-space-sm pt-space-xs">
+<div class="flex items-center justify-between px-space-xs">
+<span class="font-label-md text-label-md text-on-surface-variant font-medium">Alternative Options &amp; Safety</span>
+<span class="font-label-sm text-label-sm text-primary">Station Security Active</span>
+</div>
+<!-- Station Marshal Guide Link -->
+<a class="flex items-center justify-between p-space-md rounded-xl bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors shadow-sm min-h-[48px]" href="#safe-zone" onclick="toggleSafetyDrawer()">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-lg">local_police</span>
+</div>
+<div class="min-w-0">
+<span class="font-label-lg text-label-lg font-semibold block truncate">Station Marshal Safe Pickup Zone Guide</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block truncate">Designated CCTV-monitored bays with staff on duty</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant flex-shrink-0">chevron_right</span>
+</a>
+<!-- Decline & Waitlist Fallback Button -->
+<button class="w-full p-space-md rounded-xl bg-surface-container-lowest text-on-surface flex items-center justify-between hover:bg-surface-container-low transition-colors shadow-sm min-h-[48px] text-left" onclick="handleDecline()">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container flex-shrink-0">
+<span class="material-symbols-outlined text-lg">directions_bus</span>
+</div>
+<div class="min-w-0">
+<span class="font-label-lg text-label-lg font-semibold block truncate">Decline &amp; Re-enter Coach Waitlist</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block truncate">Next official coach scheduled for 18:45 (Pos #14 in queue)</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant flex-shrink-0">arrow_forward</span>
+</button>
+</div>
+<!-- Safety Accordion / Guide Drawer Details -->
+<div class="hidden bg-surface-container-high rounded-xl p-space-md space-y-space-sm" id="safety-drawer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs text-on-surface font-semibold">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<span class="font-label-md text-label-md uppercase tracking-wider">Carpool Safety Protocol</span>
+</div>
+<button class="text-on-surface-variant p-1" onclick="toggleSafetyDrawer()">
+<span class="material-symbols-outlined text-lg">close</span>
+</button>
+</div>
+<ul class="space-y-space-xs text-on-surface-variant font-body-sm text-body-sm pl-1">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-sm text-tertiary mt-1">pin_drop</span>
+<span>Only embark inside designated Safe Zone B; station marshals are posted 24/7.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-sm text-tertiary mt-1">pin</span>
+<span>Never board a vehicle without matching the 4-digit mutual verification code.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-sm text-tertiary mt-1">share_location</span>
+<span>Your live trip path is telemetry-tracked by the National Rail Disruption Operations Desk.</span>
+</li>
+</ul>
+</div>
+<!-- Live Disruption Support Helper Footer Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="material-symbols-outlined text-primary text-2xl">support_agent</span>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-on-surface font-semibold">Need Assistance on Platform?</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Marshal Station Dispatcher: Station Concourse Desk A</p>
+</div>
+</div>
+<a class="min-h-[44px] px-space-sm rounded-lg bg-surface-container text-primary font-label-md text-label-md flex items-center justify-center hover:bg-surface-container-high transition-colors flex-shrink-0" href="tel:18005550199">
+        Call Dispatch
+      </a>
+</div>
+</div>
+</div>
+<script>
+  function handleOptIn() {
+    const btn = document.getElementById('opt-in-button');
+    const confirmedBox = document.getElementById('confirmed-state');
+    const matchCard = document.getElementById('match-card');
+
+    if (!btn || !confirmedBox) return;
+
+    btn.disabled = true;
+    btn.innerHTML = `<span class="material-symbols-outlined text-xl animate-spin">sync</span><span>Exchanging Keys & Unlocking...</span>`;
+
+    setTimeout(() => {
+      matchCard.classList.add('opacity-60', 'pointer-events-none');
+      confirmedBox.classList.remove('hidden');
+      confirmedBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 900);
+  }
+
+  function resetOptIn() {
+    const btn = document.getElementById('opt-in-button');
+    const confirmedBox = document.getElementById('confirmed-state');
+    const matchCard = document.getElementById('match-card');
+
+    if (confirmedBox) confirmedBox.classList.add('hidden');
+    if (matchCard) matchCard.classList.remove('opacity-60', 'pointer-events-none');
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<span class="material-symbols-outlined text-xl">how_to_reg</span><span>Accept Carpool Seat with David M.</span>`;
+    }
+  }
+
+  function toggleSafetyDrawer() {
+    const drawer = document.getElementById('safety-drawer');
+    if (drawer) {
+      drawer.classList.toggle('hidden');
+      if (!drawer.classList.contains('hidden')) {
+        drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }
+
+  function handleDecline() {
+    const confirmed = confirm('Return to the coach queue? You will be held at Position #14 for the 18:45 departure.');
+    if (confirmed) {
+      const matchCard = document.getElementById('match-card');
+      if (matchCard) {
+        matchCard.innerHTML = `
+          <div class="p-space-lg text-center space-y-space-sm bg-surface-container-low">
+            <span class="material-symbols-outlined text-4xl text-primary">hourglass_top</span>
+            <h4 class="font-headline-sm text-headline-sm text-on-surface">Returned to Official Coach Queue</h4>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">Position #14 • Next 18:45 Coach to Newcastle Central. You will receive an SMS push 10 minutes prior to boarding.</p>
+            <button onclick="location.reload()" class="mt-2 min-h-[44px] px-space-md py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md">
+              Recheck Community Matches
+            </button>
+          </div>
+        `;
+      }
+    }
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-lowest/95 backdrop-blur-xl shadow-[0_-2px_12px_rgba(15,23,42,0.06)]" data-active-classes="text-primary font-semibold"><div class="flex justify-around items-center h-20 px-space-xs max-w-md mx-auto"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="incident-check-in" href="#"><span class="material-symbols-outlined text-xl mb-0.5">how_to_reg</span><span class="font-label-sm text-[10px] leading-tight text-center">Check-In</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="ranked-options" href="#"><span class="material-symbols-outlined text-xl mb-0.5">alt_route</span><span class="font-label-sm text-[10px] leading-tight text-center">Options</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="allocation-queue" href="#"><span class="material-symbols-outlined text-xl mb-0.5">pending_actions</span><span class="font-label-sm text-[10px] leading-tight text-center">Queue</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="confirmed-ticket" href="#"><span class="material-symbols-outlined text-xl mb-0.5">confirmation_number</span><span class="font-label-sm text-[10px] leading-tight text-center">Ticket</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 transition-colors text-primary font-semibold" data-path="carpool-fallback" href="#"><span class="material-symbols-outlined text-xl mb-0.5">directions_car</span><span class="font-label-sm text-[10px] leading-tight text-center">Carpool</span></a></div></nav></body></html>

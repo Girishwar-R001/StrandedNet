@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     # "auto" uses OR-Tools CP-SAT when importable, otherwise the deterministic greedy solver.
     allocation_solver: str = "auto"
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
+    # API requests allowed in flight at once. The rest wait, cheaply, outside the worker threads.
+    max_concurrent_requests: int = 32
 
 
 settings = Settings()

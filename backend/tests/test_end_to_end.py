@@ -32,14 +32,14 @@ def test_full_recovery_workflow(client, operator, as_user):
     r = client.put(f"/api/me/journeys/{journey['id']}/preferences", headers=asha,
                    json={"first_option_id": options[0]["id"], "second_option_id": options[1]["id"]})
     assert r.status_code == 200
-    assert client.post("/api/demo/simulate-preferences", headers=operator).json()["simulated"] == 10
+    assert client.post("/api/demo/simulate-preferences", headers=operator).json()["simulated"] == 11
 
     # 6. Operator sees preferences, including those who did not respond.
     prefs = get("/api/op/preferences")
-    # Silent: P-06 and P-13 by design, and P-14, who has no in-time option to choose.
-    assert prefs["submitted"] == 11 and prefs["not_selected"] == 3
+    # Silent: P-06 and P-13, by design.
+    assert prefs["submitted"] == 12 and prefs["not_selected"] == 2
 
-    # 7. Smart allocation assigns seats, without overbooking or forcing 20.
+    # 7. Smart allocation assigns seats, without overbooking.
     run = client.post("/api/op/allocation/run", headers=operator).json()
     assert run["summary"]["engine"]["seats"] <= 20
     assert client.post("/api/op/allocations/confirm-all", headers=operator).json()["failed"] == []
@@ -60,7 +60,7 @@ def test_full_recovery_workflow(client, operator, as_user):
     listings = get("/api/carpool/requests", meera)
     assert sum(r["passengers_waiting"] for r in listings) == heat["total"]
     hebbal = next(r for r in listings if r["pickup_area"] == "Hebbal area" and r["destination"] == "Whitefield")
-    assert hebbal["passengers_waiting"] == 3
+    assert hebbal["passengers_waiting"] == 4
 
     # 10. An ordinary user offers a carpool.
     r = client.post("/api/carpool/offers", headers=meera, json={

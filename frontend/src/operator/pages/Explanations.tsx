@@ -5,7 +5,7 @@ import { Badge, Empty, Loading, PageHeader, Panel, StateBadge } from '../ui'
 import { PREF_OUTCOME } from './Allocation'
 
 const COLORS: Record<string, string> = {
-  waiting: '#6c9eeb', urgency: '#f0b429', scarcity: '#4cb782', group: '#a78bda', preference: '#2f9f9f',
+  waiting: '#006194', urgency: '#d97706', scarcity: '#00855d', group: '#7c5cbf', preference: '#2f9f9f',
 }
 
 function Detail({ a }: { a: any }) {
@@ -39,7 +39,7 @@ function Detail({ a }: { a: any }) {
             <tbody>
               {Object.entries<any>(factors).map(([k, f]) => (
                 <tr key={k}>
-                  <td><span className="mr-1.5 inline-block size-2 rounded-[1px]" style={{ background: COLORS[k] }} />{f.label}</td>
+                  <td><span className="mr-1.5 inline-block size-2 rounded-sm" style={{ background: COLORS[k] }} />{f.label}</td>
                   <td className="num text-right text-op-muted">{f.value.toFixed(2)}</td>
                   <td className="num text-right text-op-muted">{f.weight.toFixed(2)}</td>
                   <td className="num text-right">{f.points.toFixed(3)}</td>
@@ -77,14 +77,14 @@ export default function Explanations() {
     <>
       <PageHeader title="Allocation explanations" sub="Every decision shows its score, the arithmetic behind it, and the feasibility checks it passed. Superseded and released decisions are kept." />
       {data.length === 0 ? <Panel><Empty>No decisions yet. Run the allocation engine first.</Empty></Panel> : (
-        <div className="grid gap-3 lg:grid-cols-[300px_1fr]">
+        <div className="grid gap-3 lg:grid-cols-[340px_1fr]">
           <Panel flush className="max-h-[calc(100vh-150px)] overflow-y-auto">
             <table className="op-table">
               <thead><tr><th>Party</th><th>Vehicle</th><th>Score</th><th>Status</th></tr></thead>
               <tbody>
                 {data.map((a: any) => (
                   <tr key={a.id} className="row-link" onClick={() => setSelected(a.id)}>
-                    <td className={`num ${picked?.id === a.id ? 'text-op-signal' : ''}`}>{a.ref}</td>
+                    <td className={`num ${picked?.id === a.id ? 'font-semibold text-op-primary' : ''}`}>{a.ref}</td>
                     <td className="num">{a.vehicle_id}</td>
                     <td className="num">{a.is_override ? '–' : a.priority_score.toFixed(2)}</td>
                     <td><StateBadge state={a.status} /></td>

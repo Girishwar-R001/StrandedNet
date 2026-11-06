@@ -1,5 +1,6 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, LayoutDashboard, Ticket } from 'lucide-react'
 import { Link, Navigate, Route, Routes } from 'react-router-dom'
+import Logo from './Logo'
 import OperatorLogin from './operator/Login'
 import OperatorShell from './operator/Shell'
 import Allocation from './operator/pages/Allocation'
@@ -25,37 +26,40 @@ import Options from './passenger/pages/Options'
 
 function Landing() {
   return (
-    <div className="grid min-h-full md:grid-cols-2">
-      <Link to="/app" className="px-root group flex flex-col justify-between gap-16 p-8 md:p-12">
-        <p className="font-semibold">The Stranded Network</p>
+    <div className="px-root flex min-h-full flex-col">
+      <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col justify-center gap-10 px-4 py-10 md:px-8">
         <div>
-          <h1 className="max-w-md text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
+          <p className="flex items-center gap-2.5 font-display text-[17px] font-semibold"><Logo /> The Stranded Network</p>
+          <h1 className="mt-8 max-w-2xl text-[30px] font-bold leading-[38px] tracking-tight md:text-[40px] md:leading-[48px]">
             Your service was cancelled. Let's get you there.
           </h1>
-          <p className="mt-4 max-w-sm text-px-muted">
-            Compare your options, rank what suits you, and follow your journey. Or offer a spare seat if you're
-            already heading that way.
-          </p>
-          <span className="mt-8 inline-flex items-center gap-2 font-medium text-px-accent">
-            Passenger app <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-          </span>
         </div>
-      </Link>
-      <Link to="/operator" className="op-root group flex flex-col justify-between gap-16 p-8 md:p-12">
-        <p className="num text-xs text-op-muted">SIMULATED NETWORK · DEMO DATA</p>
-        <div>
-          <h2 className="max-w-md text-3xl font-medium leading-tight tracking-tight md:text-4xl">
-            One disruption. Limited seats. Every decision explained.
-          </h2>
-          <p className="mt-4 max-w-sm text-sm text-op-muted">
-            Group passengers, allocate replacement capacity without overbooking, and route unmet demand to community
-            carpools.
-          </p>
-          <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-op-signal">
-            Operator console <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-          </span>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Link to="/app" className="group flex flex-col gap-3 rounded-2xl bg-px-high p-6 hover:bg-px-highest">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-px-accent text-white"><Ticket size={20} /></span>
+            <h2 className="text-[22px] font-semibold leading-7 tracking-tight">Passenger app</h2>
+            <p className="flex-1 text-px-muted">
+              Compare your options, rank what suits you, and follow your journey. Or offer a spare seat if you're
+              already heading that way.
+            </p>
+            <span className="inline-flex items-center gap-2 font-semibold text-px-accent">
+              Open the app <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+            </span>
+          </Link>
+          <Link to="/operator" className="group flex flex-col gap-3 rounded-2xl bg-px-card p-6 shadow-card hover:bg-px-low">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-px-mid text-px-accent"><LayoutDashboard size={20} /></span>
+            <h2 className="text-[22px] font-semibold leading-7 tracking-tight">Operator console</h2>
+            <p className="flex-1 text-px-muted">
+              One disruption. Limited seats. Every decision explained. Group passengers, allocate replacement capacity
+              without overbooking, and route unmet demand to community carpools.
+            </p>
+            <span className="inline-flex items-center gap-2 font-semibold text-px-accent">
+              Open the console <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+            </span>
+          </Link>
         </div>
-      </Link>
+        <p className="text-xs font-semibold uppercase tracking-wider text-px-muted">Simulated network · Demo data</p>
+      </div>
     </div>
   )
 }

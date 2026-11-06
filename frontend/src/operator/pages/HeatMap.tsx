@@ -47,14 +47,14 @@ export default function HeatMap() {
     const byId = Object.fromEntries(stops.map((s: any) => [s.id, s]))
 
     const max = Math.max(1, data.max_intensity)
-    heatLayer(data.cells.map((c: any) => [c.lat, c.lng, c.affected / max]), {
-      radius: 42, blur: 30, max: 1, minOpacity: 0.3, gradient: GRADIENT,
+    heatLayer(data.cells.map((c: any) => [c.lat, c.lng, Math.sqrt(c.affected / max)]), {
+      radius: 42, blur: 26, max: 1, minOpacity: 0.55, gradient: GRADIENT,
     }).addTo(group)
 
     for (const c of data.cells) {
       const half = c.size_deg / 2
       const rect = L.rectangle([[c.lat - half, c.lng - half], [c.lat + half, c.lng + half]], {
-        color: c.unresolved ? '#ff8a80' : '#e4e6e9', weight: c.id === cellId ? 2 : 0.75,
+        color: c.unresolved ? '#ba1a1a' : '#707881', weight: c.id === cellId ? 2 : 0.75,
         opacity: c.id === cellId ? 1 : 0.55, fillOpacity: 0,
       }).addTo(group)
       rect.on('click', () => {
@@ -68,11 +68,11 @@ export default function HeatMap() {
     for (const svc of data.disrupted_services) {
       for (const branch of svc.branches) {
         const pts = branch.map((id: string) => [byId[id].lat, byId[id].lng] as [number, number])
-        L.polyline(pts, { color: '#f0b429', weight: 1.5, dashArray: '6 6', opacity: 0.75, interactive: false }).addTo(group)
+        L.polyline(pts, { color: '#d97706', weight: 1.5, dashArray: '6 6', opacity: 0.75, interactive: false }).addTo(group)
       }
     }
     for (const seg of data.closed_segments) {
-      L.polyline([[byId[seg.from].lat, byId[seg.from].lng], [byId[seg.to].lat, byId[seg.to].lng]], { color: '#eb5757', weight: 3, dashArray: '2 6', interactive: false }).addTo(group)
+      L.polyline([[byId[seg.from].lat, byId[seg.from].lng], [byId[seg.to].lat, byId[seg.to].lng]], { color: '#ba1a1a', weight: 3, dashArray: '2 6', interactive: false }).addTo(group)
     }
 
     if (showCapacity) {
@@ -82,7 +82,7 @@ export default function HeatMap() {
         const marker = L.marker(at, {
           icon: L.divIcon({
             className: '',
-            html: `<div style="font:500 10px 'IBM Plex Sans';background:#14171bd9;border:1px solid #363c44;color:#e4e6e9;padding:1px 5px;border-radius:2px;white-space:nowrap;width:max-content;transform:translateX(-50%)">${z.zone} <span style="color:#4cb782;font-family:'IBM Plex Mono'">${z.capacity} ${z.capacity === 1 ? 'seat' : 'seats'}</span></div>`,
+            html: `<div style="font:500 10px 'Inter Variable';background:#ffffffe6;border:1px solid #dbe3f0;color:#0d1c2f;padding:1px 6px;border-radius:6px;white-space:nowrap;width:max-content;transform:translateX(-50%)">${z.zone} <span style="color:#006948;font-weight:600">${z.capacity} ${z.capacity === 1 ? 'seat' : 'seats'}</span></div>`,
             iconSize: [0, 0], iconAnchor: [0, 8],
           }),
         }).addTo(group)
@@ -125,12 +125,12 @@ export default function HeatMap() {
 
       <div className="mt-3 grid gap-3 lg:grid-cols-[1fr_280px]">
         <div className="relative min-w-0 self-start">
-          <div ref={ref} className="op-map h-[calc(100vh-250px)] min-h-96 rounded border border-op-line" />
-          <div className="absolute bottom-6 left-3 z-[1000] w-44 rounded-sm border border-op-line-strong bg-op-panel/95 p-2">
+          <div ref={ref} className="op-map h-[calc(100vh-250px)] min-h-96 rounded-xl border border-op-line" />
+          <div className="absolute bottom-6 left-3 z-[1000] w-44 rounded-lg bg-op-panel/95 p-2 shadow-card">
             <p className="text-[11px] text-op-muted">Passengers per cell</p>
-            <div className="mt-1 h-2 rounded-[1px]" style={{ background: SCALE_CSS }} />
+            <div className="mt-1 h-2 rounded-sm" style={{ background: SCALE_CSS }} />
             <div className="num mt-0.5 flex justify-between text-[10px] text-op-muted"><span>1</span><span>{data?.max_intensity ?? 0}</span></div>
-            <p className="mt-1.5 flex items-center gap-1.5 text-[10px] text-op-muted"><span className="size-2.5 border border-[#ff8a80]" /> Cell with unresolved demand</p>
+            <p className="mt-1.5 flex items-center gap-1.5 text-[10px] text-op-muted"><span className="size-2.5 border border-op-bad" /> Cell with unresolved demand</p>
             <p className="mt-0.5 flex items-center gap-1.5 text-[10px] text-op-muted"><span className="w-2.5 border-t border-dashed border-op-signal" /> Disrupted corridor</p>
           </div>
         </div>

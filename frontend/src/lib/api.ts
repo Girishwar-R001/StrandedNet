@@ -17,6 +17,10 @@ function readDetail(body: unknown, fallback: string): string {
   return fallback
 }
 
+const POLL_MS = 15000
+// Operators are few and need the KPIs to move at once. Passengers are many and can wait a moment.
+const PING_SPREAD_MS: Record<Role, number> = { operator: 250, passenger: 3000 }
+
 /**
  * One client per dashboard. Tokens live in sessionStorage under a per-role key, so an operator
  * tab and passenger tabs signed in as different people can run side by side during a demo.
@@ -27,6 +31,9 @@ export class Client {
   private socket: WebSocket | null = null
   private retry: number | undefined
   private beat: number | undefined
+  private poll: number | undefined
+  private pending: number | undefined
+  private inFlight = new Map<string, Promise<unknown>>()
 
   constructor(role: Role) {
     this.role = role
@@ -64,8 +71,13 @@ export class Client {
     return data as T
   }
 
-  get<T = any>(path: string) {
-    return this.request<T>(path)
+  /** Identical reads running at the same moment share one request. */
+  get<T = any>(path: string): Promise<T> {
+    const running = this.inFlight.get(path)
+    if (running) return running as Promise<T>
+    const request = this.request<T>(path).finally(() => this.inFlight.delete(path))
+    this.inFlight.set(path, request)
+    return request
   }
   post<T = any>(path: string, body: unknown = {}) {
     return this.request<T>(path, 'POST', body)
@@ -81,9 +93,29 @@ export class Client {
   subscribe(fn: () => void) {
     this.listeners.add(fn)
     this.connect()
+    // One timer per tab, so every hook refreshes together and duplicate reads can be shared.
+    this.poll ??= window.setInterval(() => this.refresh(), POLL_MS)
     return () => {
       this.listeners.delete(fn)
+      if (!this.listeners.size) {
+        clearInterval(this.poll)
+        this.poll = undefined
+      }
     }
+  }
+
+  private refresh() {
+    this.listeners.forEach((l) => l())
+  }
+
+  /** A write pings every tab at once. A random delay spreads the reload across the crowd, and
+   *  any further pings during the wait fold into the same single refresh. */
+  private schedule() {
+    if (this.pending !== undefined) return
+    this.pending = window.setTimeout(() => {
+      this.pending = undefined
+      this.refresh()
+    }, Math.random() * PING_SPREAD_MS[this.role])
   }
 
   private connect() {
@@ -94,7 +126,7 @@ export class Client {
     ws.onopen = () => {
       this.beat = window.setInterval(() => ws.readyState === 1 && ws.send('ping'), 30000)
     }
-    ws.onmessage = () => this.listeners.forEach((l) => l())
+    ws.onmessage = () => this.schedule()
     ws.onclose = () => {
       clearInterval(this.beat)
       this.socket = null
@@ -107,7 +139,7 @@ export class Client {
 export const opApi = new Client('operator')
 export const pxApi = new Client('passenger')
 
-/** Fetches a resource and keeps it current: socket ping first, slow poll as a safety net. */
+/** Fetches a resource and keeps it current: socket ping first, slow shared poll as a safety net. */
 export function useLive<T = any>(client: Client, path: string | null) {
   const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -132,12 +164,7 @@ export function useLive<T = any>(client: Client, path: string | null) {
 
   useEffect(() => {
     refetch()
-    const off = client.subscribe(refetch)
-    const poll = window.setInterval(refetch, 15000)
-    return () => {
-      off()
-      clearInterval(poll)
-    }
+    return client.subscribe(refetch)
   }, [client, refetch])
 
   return { data, error, loading, refetch }

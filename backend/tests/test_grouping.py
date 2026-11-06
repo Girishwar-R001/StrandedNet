@@ -6,10 +6,17 @@ from app.models import Journey, PassengerGroup
 from .conftest import cancel_x5, journey
 
 
+def _from_whitefield(db, like):
+    """A party heading into the city, the opposite way to everyone in the seeded scenario."""
+    return Journey(ref="T-01", origin_stop="WFD", dest_stop="SBC", party_size=1, dep_earliest=like.dep_earliest,
+                   dep_latest=like.dep_latest, latest_arrival=like.latest_arrival, max_walk_m=500, requirements=[])
+
+
 def test_same_destination_name_from_opposite_directions_is_not_compatible(db):
-    """P-10 and P-13 both go to City Railway Station, one from the north, one from the east."""
+    """Both go to City Railway Station, one from the north, one from the east."""
     net = Network.load(db)
-    a, b = journey(db, "P-10"), journey(db, "P-13")
+    a = journey(db, "P-10")
+    b = _from_whitefield(db, a)
     assert a.dest_stop == b.dest_stop
     result = pair_compat(a, b, net)
     assert not result.ok
@@ -19,7 +26,8 @@ def test_same_destination_name_from_opposite_directions_is_not_compatible(db):
 def test_shared_road_in_opposite_directions_counts_for_nothing(db):
     """Windows are aligned so direction is the only thing that can reject this pair."""
     net = Network.load(db)
-    outbound, inbound = journey(db, "P-03"), journey(db, "P-13")  # City<->Whitefield
+    outbound = journey(db, "P-03")  # City<->Whitefield
+    inbound = _from_whitefield(db, outbound)
     ride = net.travel(outbound.origin_stop, inbound.origin_stop)
     inbound.dep_earliest = outbound.dep_earliest + ride
     inbound.dep_latest = outbound.dep_latest + ride

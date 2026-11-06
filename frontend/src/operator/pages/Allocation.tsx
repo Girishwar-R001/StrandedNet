@@ -41,7 +41,7 @@ function Rules() {
             <span className="text-op-muted">{WEIGHT_LABEL[k]}</span>
             <span className="num">{weights[k].toFixed(2)}</span>
             <input
-              type="range" min={0} max={1} step={0.05} value={weights[k]} className="col-span-2 accent-[#f0b429]"
+              type="range" min={0} max={1} step={0.05} value={weights[k]} className="col-span-2"
               onChange={(e) => setWeights({ ...weights, [k]: Number(e.target.value) })}
             />
           </label>
@@ -112,7 +112,7 @@ export default function Allocation() {
         </StatRow>
       )}
 
-      <div className="mt-3 grid gap-3 xl:grid-cols-[1fr_290px]">
+      <div className="mt-3 grid gap-3 min-[1400px]:grid-cols-[1fr_290px]">
         <div className="grid min-w-0 content-start gap-3">
           <Panel title="Allocations" flush action={<Link to="/operator/explanations" className="text-xs text-op-muted hover:text-op-text">Inspect explanations</Link>}>
             {data.length ? (

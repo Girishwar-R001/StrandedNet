@@ -142,7 +142,7 @@ def test_proposals_hold_no_seats(db, op):
     assert {v.id: v.available_seats for v in db.query(Vehicle)} == {"RV-1": 8, "RV-2": 7, "RV-3": 5}
 
 
-def test_engine_never_exceeds_any_vehicle_and_never_forces_twenty(db, op):
+def test_engine_fills_the_fleet_exactly_and_never_exceeds_a_vehicle(db, op):
     cancel_x5(db, op)
     simulate_prefs(db)
     run, result = allocate_and_confirm(db, op)
@@ -150,8 +150,7 @@ def test_engine_never_exceeds_any_vehicle_and_never_forces_twenty(db, op):
     assert result["failed"] == []
     assert reporting.integrity(db)["over_allocated"] == 0
     assert all(v.available_seats >= 0 for v in db.query(Vehicle))
-    # Spare seats remain because nobody compatible is left, and that is correct behaviour.
-    assert run.summary["engine"]["seats"] < 20
+    assert run.summary["engine"]["seats"] == 20
 
 
 def test_parties_are_never_split_across_vehicles(db, op):

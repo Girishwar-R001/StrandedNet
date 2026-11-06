@@ -357,6 +357,28 @@ class AuditEvent(Base):
     timestamp: Mapped[datetime] = mapped_column(DateTime, default=utcnow, index=True)
 
 
+class VehicleTelemetry(Base):
+    """What sensors last said about a vehicle. Deliberately separate from Vehicle: a reading can
+    never reach the seat count or service status, because it is not stored there."""
+    __tablename__ = "vehicle_telemetry"
+    vehicle_id: Mapped[str] = mapped_column(ForeignKey("vehicles.id"), primary_key=True)
+    # VERIFIED | STALE_DEAD_RECKONING | SENSOR_CONFLICT_QUARANTINED
+    status: Mapped[str] = mapped_column(String(32), default="VERIFIED")
+    lat: Mapped[float] = mapped_column(Float)   # last verified fix
+    lng: Mapped[float] = mapped_column(Float)
+    last_ping_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+    gps_suspended: Mapped[bool] = mapped_column(Boolean, default=False)
+    sensors: Mapped[dict] = mapped_column(JSON, default=dict)  # sensor id -> online|offline
+    last_reported_seats: Mapped[int | None] = mapped_column(Integer, nullable=True)  # recorded, never applied
+    last_packet_hash: Mapped[str] = mapped_column(String(64), default="")
+    last_packet_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    spikes_rejected: Mapped[int] = mapped_column(Integer, default=0)
+    duplicates_dropped: Mapped[int] = mapped_column(Integer, default=0)
+    delayed_packets: Mapped[int] = mapped_column(Integer, default=0)
+    conflict_flag: Mapped[bool] = mapped_column(Boolean, default=False)
+    conflict_detail: Mapped[str] = mapped_column(Text, default="")
+
+
 class Setting(Base):
     __tablename__ = "settings"
     key: Mapped[str] = mapped_column(String(40), primary_key=True)

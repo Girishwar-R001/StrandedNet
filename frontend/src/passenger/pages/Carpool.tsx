@@ -1,9 +1,10 @@
-import { Clock, MapPin, Users } from 'lucide-react'
+import { ArrowRight, Car, Clock, Handshake, Luggage, MapPin, ShieldAlert, Accessibility, Users } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { pxApi, useLive } from '../../lib/api'
 import { hhmm, parseHhmm, REQUIREMENT_LABEL } from '../../lib/format'
 import MatchCard from '../MatchCard'
-import { Button, Card, Field, Pill, useDo } from '../ui'
+import SurgeBanner from '../SurgeBanner'
+import { Button, Card, CheckRow, Eyebrow, Field, IconTile, Pill, SectionHead, useDo } from '../ui'
 
 const EMPTY = { origin: '', dest: '', time: '18:10', seats: 3, vehicle: 'Hatchback', wheelchair: false, luggage: true, zone: '', notes: '', consent: false }
 
@@ -58,14 +59,21 @@ export default function Carpool() {
 
   return (
     <div className="grid gap-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Community carpool</h1>
-        <p className="mt-1 text-px-muted">When official seats run out, people already heading the same way can help.</p>
-      </div>
+      <section className="flex items-start gap-3 rounded-2xl bg-px-high p-5">
+        <IconTile icon={Handshake} className="size-12 rounded-full bg-white" />
+        <div className="min-w-0">
+          <Eyebrow className="text-px-accent">Community safety net</Eyebrow>
+          <h1 className="mt-0.5 text-2xl font-semibold leading-tight tracking-tight">Community carpool</h1>
+          <p className="mt-1 text-px-muted">When official seats run out, people already heading the same way can help.</p>
+        </div>
+      </section>
 
-      <p className="rounded-lg bg-px-warn-soft px-4 py-3 text-[15px] text-px-warn">
-        Community rides are offered by other users. They're separate from official transport, and drivers and vehicles aren't verified by this service. Agree only to rides you're comfortable with.
+      <p className="flex items-start gap-2.5 rounded-xl bg-px-warn-soft px-4 py-3 text-[15px] text-px-warn">
+        <ShieldAlert size={18} className="mt-0.5 shrink-0" />
+        <span>Community rides are offered by other users. They're separate from official transport, and drivers and vehicles aren't verified by this service. Agree only to rides you're comfortable with.</span>
       </p>
+
+      <SurgeBanner offerLink={false} />
 
       {live.length > 0 && (
         <section className="grid gap-3">
@@ -83,19 +91,19 @@ export default function Carpool() {
               <h3 className="text-lg font-semibold leading-snug">To {r.destination}</h3>
               <Pill tone={r.status === 'open' ? 'warn' : 'info'}>{LISTING_STATUS[r.status] ?? r.status}</Pill>
             </div>
-            <ul className="mt-2 grid gap-1 text-[15px]">
-              <li className="flex items-center gap-2"><Users size={16} className="text-px-muted" /> {r.passengers_waiting === 1 ? '1 person' : `About ${r.passengers_waiting} people`} waiting</li>
-              <li className="flex items-center gap-2"><MapPin size={16} className="text-px-muted" /> Pickup: {r.pickup_area}</li>
-              <li className="flex items-center gap-2"><Clock size={16} className="text-px-muted" /> Leaving {hhmm(r.window_start)}–{hhmm(r.window_end)}</li>
+            <ul className="mt-3 grid gap-1.5 rounded-xl bg-px-low p-3 text-[15px]">
+              <li className="flex items-center gap-2"><Users size={16} className="text-px-accent" /> {r.passengers_waiting === 1 ? '1 person' : `About ${r.passengers_waiting} people`} waiting</li>
+              <li className="flex items-center gap-2"><MapPin size={16} className="text-px-accent" /> Pickup: {r.pickup_area}</li>
+              <li className="flex items-center gap-2"><Clock size={16} className="text-px-accent" /> Leaving {hhmm(r.window_start)}–{hhmm(r.window_end)}</li>
             </ul>
-            {r.requirements.length > 0 && <p className="mt-1 text-[15px] text-px-muted">Needs: {r.requirements.map((q: string) => REQUIREMENT_LABEL[q].toLowerCase()).join(', ')}</p>}
-            <Button variant="secondary" className="mt-3" onClick={() => help(r)}>I'm heading this way</Button>
+            {r.requirements.length > 0 && <p className="mt-2 text-[15px] text-px-muted">Needs: {r.requirements.map((q: string) => REQUIREMENT_LABEL[q].toLowerCase()).join(', ')}</p>}
+            <Button variant="secondary" className="mt-3 w-full" onClick={() => help(r)}>I'm heading this way <ArrowRight size={18} /></Button>
           </Card>
         ))}
       </section>
 
-      <form ref={formRef} onSubmit={submit} className="grid scroll-mt-20 gap-4">
-        <h2 className="text-lg font-semibold">Offer a ride</h2>
+      <form ref={formRef} onSubmit={submit} className="grid scroll-mt-28 gap-4 rounded-2xl bg-px-card p-5 shadow-card">
+        <SectionHead icon={Car} title="Offer a ride" sub="Already making this trip? Share your spare seats." />
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Starting from">
             <select className="px-input" required value={f.origin} onChange={(e) => set('origin', e.target.value)}>
@@ -119,13 +127,13 @@ export default function Carpool() {
             </select>
           </Field>
         </div>
-        <div className="grid gap-1">
-          <label className="flex items-center gap-2.5"><input type="checkbox" className="size-4 accent-[#0f6b5c]" checked={f.luggage} onChange={(e) => set('luggage', e.target.checked)} /> Room for luggage</label>
-          <label className="flex items-center gap-2.5"><input type="checkbox" className="size-4 accent-[#0f6b5c]" checked={f.wheelchair} onChange={(e) => set('wheelchair', e.target.checked)} /> Suitable for a wheelchair</label>
+        <div className="grid gap-2">
+          <CheckRow icon={Luggage} label="Room for luggage" checked={f.luggage} onChange={(e) => set('luggage', e.target.checked)} />
+          <CheckRow icon={Accessibility} label="Suitable for a wheelchair" checked={f.wheelchair} onChange={(e) => set('wheelchair', e.target.checked)} />
         </div>
         <Field label="Route notes (optional)"><input className="px-input" maxLength={300} value={f.notes} onChange={(e) => set('notes', e.target.value)} /></Field>
-        <label className="flex items-start gap-2.5 text-[15px]">
-          <input type="checkbox" required className="mt-1 size-4 accent-[#0f6b5c]" checked={f.consent} onChange={(e) => set('consent', e.target.checked)} />
+        <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-px-low p-3 text-[15px]">
+          <input type="checkbox" required className="mt-0.5 size-5 shrink-0" checked={f.consent} onChange={(e) => set('consent', e.target.checked)} />
           <span>I'm already making this trip and I'm offering these seats myself. I understand this isn't official transport, and that nothing is agreed until the passengers and I both confirm.</span>
         </label>
         <Button type="submit" disabled={busy}>Offer my seats</Button>

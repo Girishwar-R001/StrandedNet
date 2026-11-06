@@ -2,6 +2,7 @@ import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { opApi, useLive } from '../../lib/api'
 import { hhmm, parseHhmm } from '../../lib/format'
+import { TelemetryBadge } from '../StressBar'
 import { Badge, Btn, Loading, PageHeader, Panel, useAction } from '../ui'
 
 function AddVehicle({ stops, onDone }: { stops: any[]; onDone: () => void }) {
@@ -34,8 +35,10 @@ function AddVehicle({ stops, onDone }: { stops: any[]; onDone: () => void }) {
 export default function Vehicles() {
   const { data, error, refetch } = useLive(opApi, '/op/vehicles')
   const { data: stops } = useLive(opApi, '/network/stops')
+  const { data: stress } = useLive(opApi, '/op/stress')
   const { busy, run } = useAction()
   if (!data) return <Loading error={error} />
+  const feeds = Object.fromEntries((stress?.telemetry.vehicles ?? []).map((f: any) => [f.vehicle_id, f]))
 
   const total = data.reduce((n: number, v: any) => n + (v.status === 'available' ? v.capacity : 0), 0)
   const free = data.reduce((n: number, v: any) => n + (v.status === 'available' ? v.available_seats : 0), 0)
@@ -57,9 +60,16 @@ export default function Vehicles() {
               <span className="text-[11px] text-op-muted">Seats remaining</span>
               <span className="num text-lg">{v.available_seats}<span className="text-op-muted">/{v.capacity}</span></span>
             </div>
+            {feeds[v.id] && (
+              <div className="mb-2">
+                <TelemetryBadge tone={feeds[v.id].tone} label={feeds[v.id].label} />
+                {feeds[v.id].position.source === 'dead_reckoning' && <p className="mt-1 text-[11px] text-op-muted">STALE_DEAD_RECKONING: estimated position, {feeds[v.id].position.signal_age_s}s since last ping.</p>}
+                {feeds[v.id].conflict && <p className="mt-1 text-[11px] font-medium text-op-bad">SENSOR_CONFLICT_QUARANTINED: bookings locked until reviewed.</p>}
+              </div>
+            )}
             <div className="mt-1 flex gap-0.5">
               {Array.from({ length: v.capacity }, (_, i) => (
-                <span key={i} className={`h-3 flex-1 rounded-[1px] ${i < v.booked ? 'bg-op-good' : 'bg-op-raised'}`} />
+                <span key={i} className={`h-3 flex-1 rounded-sm ${i < v.booked ? 'bg-op-good' : 'bg-op-raised'}`} />
               ))}
             </div>
             <p className="mt-2 text-[11px] text-op-muted">{[v.wheelchair ? 'Step-free, wheelchair lift' : 'Not step-free', v.luggage ? 'Luggage space' : 'No luggage space'].join(' · ')}</p>

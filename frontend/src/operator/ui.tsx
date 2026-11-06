@@ -11,9 +11,17 @@ const toneText: Record<Tone, string> = {
   info: 'text-op-info',
 }
 
+const toneBg: Record<Tone, string> = {
+  neutral: 'bg-op-raised',
+  good: 'bg-px-good-soft',
+  bad: 'bg-px-bad-soft',
+  warn: 'bg-px-warn-soft',
+  info: 'bg-px-mid',
+}
+
 export function Badge({ tone = 'neutral', children }: { tone?: Tone; children: ReactNode }) {
   return (
-    <span className={`inline-flex items-center gap-1.5 whitespace-nowrap text-xs ${toneText[tone]}`}>
+    <span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-1.5 py-0.5 text-xs font-medium ${toneText[tone]} ${toneBg[tone]}`}>
       <span className="size-1.5 rounded-full bg-current" />
       {children}
     </span>
@@ -26,16 +34,16 @@ export function Btn({
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'default' | 'primary' | 'danger' | 'ghost' }) {
   const look = {
-    default: 'border-op-line-strong bg-op-raised text-op-text hover:border-op-faint',
-    primary: 'border-op-signal bg-op-signal font-medium text-[#1a1407] hover:brightness-110',
-    danger: 'border-op-line-strong bg-op-raised text-op-bad hover:border-op-bad',
+    default: 'border-transparent bg-px-mid text-op-primary hover:bg-px-high',
+    primary: 'border-op-primary bg-op-primary text-white hover:bg-px-accent-strong',
+    danger: 'border-transparent bg-px-bad-soft text-op-bad hover:border-op-bad',
     ghost: 'border-transparent text-op-muted hover:text-op-text',
   }[variant]
   return (
     <button
       type="button"
       {...props}
-      className={`inline-flex cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-[3px] border px-2.5 py-1 text-xs disabled:cursor-not-allowed disabled:opacity-40 ${look} ${className}`}
+      className={`inline-flex cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border px-3 py-1.5 text-[13px] font-semibold disabled:cursor-not-allowed disabled:opacity-40 ${look} ${className}`}
     />
   )
 }
@@ -54,14 +62,14 @@ export function Panel({
   flush?: boolean
 }) {
   return (
-    <section className={`min-w-0 rounded border border-op-line bg-op-panel ${className}`}>
+    <section className={`min-w-0 overflow-hidden rounded-xl bg-op-panel shadow-card ${className}`}>
       {(title || action) && (
-        <header className="flex min-h-9 items-center justify-between gap-3 border-b border-op-line px-3 py-1.5">
-          <h2 className="text-xs font-medium text-op-text">{title}</h2>
+        <header className="flex min-h-11 items-center justify-between gap-3 border-b border-op-line px-4 py-2">
+          <h2 className="text-sm font-semibold text-op-text">{title}</h2>
           {action}
         </header>
       )}
-      <div className={flush ? 'overflow-x-auto' : 'p-3'}>{children}</div>
+      <div className={flush ? 'overflow-x-auto' : 'p-4'}>{children}</div>
     </section>
   )
 }
@@ -78,9 +86,9 @@ export function Stat({
   tone?: Tone
 }) {
   return (
-    <div className="min-w-0 bg-op-panel px-3 py-2.5">
-      <p className="truncate text-[11px] text-op-muted">{label}</p>
-      <p className={`num mt-1 text-2xl leading-none ${tone ? toneText[tone] : 'text-op-text'}`}>{value}</p>
+    <div className="min-w-0 rounded-xl bg-op-panel px-4 py-3 shadow-card">
+      <p className="truncate text-xs font-medium text-op-muted">{label}</p>
+      <p className={`num mt-1.5 font-display text-[28px] font-semibold leading-none ${tone ? toneText[tone] : 'text-op-text'}`}>{value}</p>
       {sub && <p className="mt-1.5 truncate text-[11px] text-op-faint">{sub}</p>}
     </div>
   )
@@ -93,15 +101,15 @@ export function StatRow({ children, cols = 6 }: { children: ReactNode; cols?: nu
     5: 'grid-cols-2 sm:grid-cols-5',
     6: 'grid-cols-2 sm:grid-cols-3 xl:grid-cols-6',
   }
-  return <div className={`grid gap-px overflow-hidden rounded border border-op-line bg-op-line ${grid[cols]}`}>{children}</div>
+  return <div className={`grid gap-3 ${grid[cols]}`}>{children}</div>
 }
 
 export function PageHeader({ title, sub, action }: { title: string; sub?: ReactNode; action?: ReactNode }) {
   return (
-    <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+    <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
       <div className="min-w-0">
-        <h1 className="text-base font-medium">{title}</h1>
-        {sub && <p className="mt-0.5 max-w-3xl text-xs text-op-muted">{sub}</p>}
+        <h1 className="text-[22px] font-semibold leading-7 tracking-tight">{title}</h1>
+        {sub && <p className="mt-0.5 max-w-3xl text-[13px] text-op-muted">{sub}</p>}
       </div>
       {action && <div className="flex flex-wrap items-center gap-2">{action}</div>}
     </div>
@@ -156,16 +164,16 @@ export function ReasonDialog({
   const [reason, setReason] = useState('')
   const ready = noReason || reason.trim().length >= 3
   return (
-    <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" aria-label={title}>
+    <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-[#0f172a]/45 p-4" role="dialog" aria-modal="true" aria-label={title}>
       <form
-        className="w-full max-w-md rounded border border-op-line-strong bg-op-panel p-4"
+        className="w-full max-w-md rounded-2xl bg-op-panel p-5 shadow-[0_12px_32px_-4px_rgba(15,23,42,0.12)]"
         onSubmit={(e) => {
           e.preventDefault()
           if (ready) onConfirm(reason.trim())
         }}
       >
         <div className="flex items-start justify-between gap-3">
-          <h2 className="text-sm font-medium">{title}</h2>
+          <h2 className="text-lg font-semibold">{title}</h2>
           <button type="button" aria-label="Close" onClick={onCancel} className="cursor-pointer text-op-muted hover:text-op-text">
             <X size={16} />
           </button>
@@ -204,7 +212,7 @@ export function ToastHost({ children }: { children: ReactNode }) {
       {children}
       <div className="fixed bottom-4 right-4 z-[3000] flex w-80 max-w-[calc(100vw-2rem)] flex-col gap-2" aria-live="polite">
         {items.map((t) => (
-          <div key={t.id} className={`fade-in rounded border bg-op-raised px-3 py-2 text-xs ${t.bad ? 'border-op-bad text-op-text' : 'border-op-line-strong text-op-text'}`}>
+          <div key={t.id} className={`fade-in rounded-xl border bg-op-panel px-3 py-2 text-[13px] text-op-text shadow-card ${t.bad ? 'border-op-bad' : 'border-op-line'}`}>
             {t.text}
           </div>
         ))}

@@ -39,7 +39,7 @@ export default function Groups() {
                   {PARTS.map(([key, label]) => (
                     <div key={key}>
                       <div className="flex justify-between text-[10px] text-op-muted"><span>{label}</span><span className="num">{Math.round((g.breakdown[key] ?? 0) * 100)}</span></div>
-                      <div className="mt-0.5 h-1 rounded-[1px] bg-op-raised"><div className="h-full rounded-[1px] bg-op-info" style={{ width: `${(g.breakdown[key] ?? 0) * 100}%` }} /></div>
+                      <div className="mt-0.5 h-1 rounded-sm bg-op-raised"><div className="h-full rounded-sm bg-op-info" style={{ width: `${(g.breakdown[key] ?? 0) * 100}%` }} /></div>
                     </div>
                   ))}
                 </div>

@@ -18,8 +18,8 @@ from sqlalchemy.orm import Session
 
 from ..config import settings
 from ..models import (ACTIVE_ALLOCATION, Allocation, AllocationRun, Journey, JourneyOption,
-                      PassengerGroup, Preference, Vehicle, utcnow)
-from ..services import audit, fmt, notify, now_min, thresholds, weights
+                      PassengerGroup, Preference, Vehicle, VehicleTelemetry, utcnow)
+from ..services import audit, fmt, get_setting, notify, now_min, thresholds, weights
 from . import priority
 from .carpool import withdraw_from_carpool
 from .feasibility import Assessment, assess_vehicle
@@ -154,7 +154,10 @@ def run_allocation(db: Session, net: Network, actor=None, solver: str | None = N
     locked = {a.journey_id for a in db.query(Allocation).filter(Allocation.status.in_(ACTIVE_ALLOCATION))}
     parties = [j for j in db.query(Journey).filter_by(status="affected").order_by(Journey.ref)
                if j.id not in locked]
-    vehicles = db.query(Vehicle).filter_by(status="available").order_by(Vehicle.id).all()
+    # A vehicle under a sensor dispute keeps its bookings but takes no new ones until reviewed.
+    quarantined = {t.vehicle_id for t in db.query(VehicleTelemetry).filter_by(conflict_flag=True)}
+    vehicles = [v for v in db.query(Vehicle).filter_by(status="available").order_by(Vehicle.id)
+                if v.id not in quarantined]
     capacity = {v.id: v.available_seats - seats_committed_unreserved(db, v.id) for v in vehicles}
 
     cands: dict[int, dict] = {}
@@ -185,6 +188,7 @@ def run_allocation(db: Session, net: Network, actor=None, solver: str | None = N
     by_id = {j.id: j for j in parties}
     labels = {g.id: g.label for g in db.query(PassengerGroup)}
     vmap = {v.id: v for v in vehicles}
+    reduction = get_setting(db, "scenario", {}).get("reduction_pct")
     for jid, vid in sorted(placed.items(), key=lambda kv: -cands[kv[0]][kv[1]]["score"]):
         j, c = by_id[jid], cands[jid][vid]
         left[vid] -= j.party_size
@@ -193,8 +197,8 @@ def run_allocation(db: Session, net: Network, actor=None, solver: str | None = N
             journey_id=jid, group_id=j.group_id, vehicle_id=vid, run_id=run.id, seats=j.party_size,
             pickup_stop=res.pickup_stop, pickup_min=res.pickup_min, arrival_min=res.arrival_min,
             priority_score=c["score"], breakdown=c["breakdown"], checks=res.checks,
-            explanation=priority.describe(j, vmap[vid], c["score"], c["breakdown"], c["outcome"],
-                                          labels.get(j.group_id)),
+            explanation=priority.triage_note(j, c["breakdown"], labels.get(j.group_id), reduction)
+            + priority.describe(j, vmap[vid], c["score"], c["breakdown"], c["outcome"], labels.get(j.group_id)),
             preference_outcome=c["outcome"]))
 
     unplaced = []

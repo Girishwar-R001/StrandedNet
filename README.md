@@ -15,7 +15,7 @@ To run it, see [SETUP.md](SETUP.md).
 | | Passenger app (`/app`) | Operator console (`/operator`) |
 | --- | --- | --- |
 | **For** | Travellers and community drivers | Transport control room staff |
-| **Feel** | Warm, plain language, one column, mobile first | Dark, dense, monospaced figures |
+| **Feel** | Calm, plain language, one column, mobile first | Same design system on a denser grid, tabular figures |
 | **Sections** | Status and tracking, journey registration, disruption details, compare and rank alternatives, assigned transport, carpool requests, offer a ride, match and consent, updates | Overview, disruption map, heat map, passengers, grouping, preferences, unresolved demand, vehicles, smart allocation, carpool monitoring, simulation, explanations, audit log |
 
 Both use the same API and database. Access rules are enforced by the backend, and changes reach every open dashboard over a WebSocket.
@@ -83,18 +83,33 @@ The scenario is reproducible: 24 passengers in 14 parties, and 3 vehicles with 8
 
 | Latest run | Engine | First come |
 | --- | --- | --- |
-| Seats filled | 18 | 18 |
-| **Passengers left with no in-time alternative** | **1** | **5** |
-| Parties seated | 9 | 11 |
-| Priority-weighted value | 12.32 | 11.67 |
+| Seats filled | 20 | 20 |
+| **Passengers left with no in-time alternative** | **0** | **4** |
+| Parties seated | 11 | 13 |
+| Priority-weighted value | 13.06 | 12.39 |
 
 Read these with care:
 
 - **The scenario was designed to show this difference.** It includes a late-reporting party of 4 with no walk-up alternative, which is exactly the case a queue handles badly. This is an illustration, not evidence about real-world performance.
 - **The engine doesn't win on every measure.** First come seats more parties, because small parties fill gaps. The engine chooses to keep the party with no other way home together.
-- **Two seats stay empty on purpose.** Nobody left can use them, and the engine won't force a bad fit.
 
-After official allocation 6 passengers remain. One carpool offer takes 3 of them, leaving 3 unresolved and visible to the operator.
+After official allocation 4 passengers remain, all on one corridor, and one 4-seat carpool offer can carry them.
+
+### Stress constraints
+
+The bar at the top of the operator console runs these in one click. `SETUP.md` lists every control.
+
+| | Baseline | Crisis surge (3x demand, 50% fleet) |
+| --- | --- | --- |
+| Stranded passengers | 24 | 72 |
+| Official seats | 20 | 10 |
+| Seated officially | 20 | 10 |
+| Rolled over to carpool | 4 | 62, in pools of 18, 16, 15 and 13 |
+| Over-allocation count | 0 | 0 |
+
+**The surge is a designed scenario.** Its corridors and party sizes were chosen so the result is reproducible, so treat these figures as a demonstration rather than a capacity claim.
+
+**Telemetry can't change seats or bookings.** Readings live in their own table (`engines/telemetry.py`), and nothing there writes a seat count, a vehicle status or an allocation. Spikes are rejected, repeated packets dropped, lost signals fall back to dead reckoning, and a sensor dispute on a vehicle with confirmed passengers quarantines it until an operator decides.
 
 ## What is real and what is simulated
 
@@ -113,6 +128,8 @@ After official allocation 6 passengers remain. One carpool offer takes 3 of them
 - **Map tiles need internet.** Without it the map background is blank, but overlays, the heat layer and the rest of the app still work.
 - **PostgreSQL is untested.** The schema and queries are written to be portable, but everything was run on SQLite.
 - **Community drivers are not verified.** The only trust indicators are completed rides and membership date, and the app says so plainly. A real launch would need identity checks, insurance and legal review.
+- **Telemetry is simulated.** There are no physical devices, so a feed counts as healthy until a fault is injected or a bad packet arrives at `POST /api/op/telemetry/ingest`. Dead-reckoned positions are straight-line estimates between stops.
+- **Carpool waves and consent can be simulated.** The controls stand in for real drivers and passengers and are audited as `SIMULATED`, but every match still goes through the real checks.
 - **Walk-up services have no modelled capacity.** The app recommends them but says a seat isn't guaranteed.
 - **Demo mode is insecure by design.** It exposes a quick-login list and a reset. Set `DEMO_MODE=false` and a real `JWT_SECRET` anywhere else. The server refuses to start with the default secret once demo mode is off.
 
@@ -145,8 +162,8 @@ backend/
     seed.py     the demonstration scenario
   tests/
 frontend/src/
-  operator/     control room console (IBM Plex, dark)
-  passenger/    passenger app (Figtree, light)
+  operator/     control room console (Calm Horizon, dense)
+  passenger/    passenger app (Calm Horizon: Plus Jakarta Sans, Inter)
   lib/          API client, live updates, Leaflet helpers
 ```
 

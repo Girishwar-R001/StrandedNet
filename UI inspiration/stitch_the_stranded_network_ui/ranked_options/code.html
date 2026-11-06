@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>The Stranded Network</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#f8f9ff;}body{overscroll-behavior-y:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-bright": "#f8f9ff", "surface": "#f8f9ff", "primary-container": "#007bb9", "error-container": "#ffdad6", "inverse-on-surface": "#ebf1ff", "surface-variant": "#d5e3fd", "on-tertiary": "#ffffff", "on-surface-variant": "#3f4850", "secondary-fixed-dim": "#bec6e0", "outline-variant": "#bfc7d2", "on-error-container": "#93000a", "surface-container": "#e6eeff", "on-error": "#ffffff", "secondary-fixed": "#dae2fd", "tertiary": "#006948", "primary": "#006194", "on-secondary-fixed": "#131b2e", "on-secondary-fixed-variant": "#3f465c", "on-surface": "#0d1c2f", "on-secondary": "#ffffff", "surface-container-high": "#dde9ff", "secondary": "#565e74", "inverse-primary": "#93ccff", "surface-container-lowest": "#ffffff", "error": "#ba1a1a", "on-primary-container": "#fdfcff", "on-primary-fixed": "#001d31", "on-tertiary-fixed-variant": "#005137", "on-secondary-container": "#5c647a", "tertiary-container": "#00855d", "on-background": "#0d1c2f", "inverse-surface": "#233144", "on-primary": "#ffffff", "background": "#f8f9ff", "on-tertiary-fixed": "#002114", "surface-dim": "#ccdbf4", "surface-tint": "#006398", "primary-fixed-dim": "#93ccff", "secondary-container": "#dae2fd", "surface-container-low": "#eff4ff", "tertiary-fixed": "#85f8c4", "tertiary-fixed-dim": "#68dba9", "surface-container-highest": "#d5e3fd", "primary-fixed": "#cce5ff", "on-primary-fixed-variant": "#004b73", "on-tertiary-container": "#f5fff7", "outline": "#707881" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "gutter-desktop": "1.5rem", "space-md": "1rem", "margin": "1rem", "margin-desktop": "3rem", "space-sm": "0.5rem", "gutter": "1rem", "space-lg": "1.5rem", "space-xl": "2.5rem", "space-xs": "0.25rem", "margin-tablet": "2rem" }, fontFamily: { "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "headline-xl": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "headline-xl-mobile": ["Plus Jakarta Sans"], "label-md": ["Inter"], "body-md": ["Inter"], "label-lg": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "headline-md": ["Plus Jakarta Sans"] }, fontSize: { "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}], "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}], "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}], "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500"}], "headline-xl-mobile": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "700"}], "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}], "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}], "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}], "headline-sm": ["18px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600"}], "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}], "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}] } } } }</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-28 flex flex-col justify-between px-margin py-space-xs"><div class="flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="The Stranded Network Logo" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/ALJJyrCbryuVEm93xcwUG5VxN-6oIraAkJN_4hgWalzE3GGaXrPYmG5vNInoBz80t-EkcE3vl2mQOy9W7aV2746_JK859wF-0C_543HZ0iOpYxXvrHrn6Zzub-3Mdhq9zykAWEVpq-XoZhrAT6D42L-c_U4OXTcBtkePTajBN14vwoSz6C5GUJTsJR2sRmb3LpfpMOUirxCGPCWXI9cEDBvlxYm1CJaN2PXaRGJWXTUjv0s"/><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight">The Stranded Network</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Ranked Options</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><a aria-label="24/7 Crisis Helpline" class="flex items-center gap-1 min-h-[44px] px-space-sm rounded-full bg-error-container text-on-error-container font-label-md text-label-md active:scale-95 transition-transform" href="tel:18005550199"><span class="material-symbols-outlined text-lg leading-none">support_agent</span><span class="hidden xs:inline">24/7 Help</span></a><div class="min-h-[44px] min-w-[44px] flex items-center justify-center"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-surface-container-highest" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6fv8NLbgJDlBHL9b85ZgFRVk8eOBM_m_0p85TUdVBH8XXtBPwFpF9-3NN6ZewRtVK96KgIVaIB-6zbIKBSRju9V7KHPPDb4drCUAAQhWLT8009vBW6TRIPgBMnNnY_3LJ52XDf5V71XdNTrfLSgoja81tiVJ5QTVBxjkc9FVy6MTuycYF7Li360jF8jaSRVSntizXumEl_NF-7_xduPPX7oiK6t8tm1qpNpISqjQ"/></div></div></div><div class="flex items-center justify-between px-space-sm py-1 rounded-lg bg-surface-container text-on-surface-variant"><div class="flex items-center gap-space-xs min-w-0"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse flex-shrink-0"></span><span class="font-label-sm text-label-sm text-on-surface font-semibold tracking-wide uppercase truncate">INCIDENT ACTIVE • ROUTE 104</span></div><span class="font-label-sm text-label-sm text-tertiary flex items-center gap-0.5 flex-shrink-0 font-medium"><span class="material-symbols-outlined text-sm leading-none">verified_user</span> Protected</span></div></div></header><main class="flex flex-col relative w-full pt-28 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-margin space-y-space-md">
+<section class="bg-surface-container rounded-xl p-space-md shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between gap-space-xs mb-space-xs">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-primary text-base">route</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider truncate">Corridor Priority</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary bg-tertiary-fixed/40 px-2 py-0.5 rounded-full flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-xs">sync</span> Auto-Syncing
+      </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-1">Route 104 Northbound • Newcastle Central</h2>
+<div class="flex items-center gap-2 mt-2 pt-2 bg-surface-container-high/60 rounded-lg p-2.5">
+<span class="material-symbols-outlined text-primary-container text-lg animate-pulse">timer</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Active Fleet Allocation</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">
+          42 verified seats releasing in <span class="font-mono font-semibold text-primary" id="countdown-timer">04:18</span>
+</span>
+</div>
+</div>
+</section>
+<section class="bg-surface-container-low rounded-xl p-space-md shadow-sm flex items-start gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center flex-shrink-0 text-on-secondary-container mt-0.5">
+<span class="material-symbols-outlined text-base">info</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg text-on-surface font-semibold">Dual-Option Safeguard Active</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+        Rank your preferred recovery routes. If your 1st Choice hits full capacity before lock, your 2nd Choice is secured immediately with no queue penalty.
+      </p>
+</div>
+</section>
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm">reorder</span>
+<span class="font-label-md text-label-md text-on-surface uppercase tracking-wider font-semibold">Assigned Preferences</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Drag or tap below to invert</span>
+</div>
+<div class="flex flex-col space-y-space-md" id="cards-container">
+<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-md transition-all duration-300 relative overflow-hidden" data-rank="1" id="card-choice-a">
+<div class="flex items-center justify-between gap-2 pb-space-sm">
+<div class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold shadow-sm" id="badge-a">
+<span class="material-symbols-outlined text-sm">hotel_class</span>
+<span class="rank-text">Rank #1 Choice</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary flex items-center gap-1 font-semibold bg-surface-container-low px-2 py-0.5 rounded-full">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> 18 seats available
+        </span>
+</div>
+<div class="flex gap-space-sm items-start my-1">
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden flex-shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="Modern high-comfort passenger fleet bus waiting at an illuminated evening transit platform with clear blue digital route signs displaying Express Newcastle in realistic crisp lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXiTuXeNTXJF3FJImw-GzRvrxVFv73kPHCCPkI56BiEvq3_Or0LB1K5NvVUMjmiJqT_TFXx8NH7iwXhsbMsx2EimTEFfR1jszXwaNtvHgekKEsheuftmWFEaZNiNloDgOfytMnyeTBAexCraEqRCAZzEzV4jefsi-zHtyxW1YU_8L4VTvzZUMkGsDgfa8WX5STvbZoyS542oHk8FAT-thsUdtviMxKoVrTX5Z_lVg"/>
+</div>
+<div class="min-w-0 flex-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate leading-snug">Official Fleet Coach A8 • Express</h3>
+<p class="font-label-lg text-label-lg text-primary font-semibold flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-base">schedule</span>
+            Departs 18:25 (in 14 mins)
+          </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Direct to Newcastle Central</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-space-xs mt-3 bg-surface-container-low p-2.5 rounded-lg">
+<div class="flex items-center gap-1.5 min-w-0">
+<span class="material-symbols-outlined text-on-surface-variant text-base">directions_bus</span>
+<span class="font-label-sm text-label-sm text-on-surface truncate">54-Seater Luxury Coach</span>
+</div>
+<div class="flex items-center gap-1.5 min-w-0">
+<span class="material-symbols-outlined text-on-surface-variant text-base">bolt</span>
+<span class="font-label-sm text-label-sm text-on-surface truncate">Direct (42 min ride)</span>
+</div>
+</div>
+<div class="mt-2.5 flex items-center gap-1.5 px-2.5 py-1.5 bg-surface-container rounded-lg text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-base">accessible</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Fully Wheelchair Accessible • Climate Controlled</span>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between">
+<span class="font-label-md text-label-md text-tertiary flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-base">check_circle</span>
+<span class="status-summary">Active Primary Allocation</span>
+</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-2 py-1 rounded">Bay 3 South</span>
+</div>
+</article>
+<div class="flex justify-center -my-2 z-10">
+<button class="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-highest hover:bg-secondary-container text-on-surface font-label-md text-label-md shadow-md active:scale-95 transition-all" id="swap-ranks-btn" type="button">
+<span class="material-symbols-outlined text-base text-primary">swap_vert</span>
+<span class="font-semibold">Tap to Swap Preference Order</span>
+</button>
+</div>
+<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-md transition-all duration-300 relative overflow-hidden" data-rank="2" id="card-choice-b">
+<div class="flex items-center justify-between gap-2 pb-space-sm">
+<div class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md font-semibold" id="badge-b">
+<span class="material-symbols-outlined text-sm">schedule_send</span>
+<span class="rank-text">Rank #2 Choice</span>
+</div>
+<span class="font-label-sm text-label-sm text-error flex items-center gap-1 font-semibold bg-error-container/40 px-2 py-0.5 rounded-full">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> 4 seats remaining
+        </span>
+</div>
+<div class="flex gap-space-sm items-start my-1">
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden flex-shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="Silver professional compact executive airport shuttle van parked under clear covered terminal lights, ready for express boarding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu2B6RV7rCWeENJBoJpblM8C5a1kK_qxXj98LT1M1bywwMqnGbS2RaTVuNfaG0TsZF1xxGNfoKUtmH4a4L-U86stSZIyGVjPSFF-l17GiOp7mDG5Ym8TTHGSH1QGuiPJo6TLiTsP1_4A-WNBFEGTjcRl0ABSGb26tQYSX0Bz1ajrqTDSoKBMi1k20eAmDqHVhOBtFE4YX9UDVEhrEX9T1bxrA8aGwPzjaogMZUQL4"/>
+</div>
+<div class="min-w-0 flex-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate leading-snug">Rapid Transit Minibus Shuttle B2</h3>
+<p class="font-label-lg text-label-lg text-on-surface-variant font-semibold flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-base">schedule</span>
+            Departs 18:35 (in 24 mins)
+          </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Zone C Pickup • Via Durham</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-space-xs mt-3 bg-surface-container-low p-2.5 rounded-lg">
+<div class="flex items-center gap-1.5 min-w-0">
+<span class="material-symbols-outlined text-on-surface-variant text-base">airport_shuttle</span>
+<span class="font-label-sm text-label-sm text-on-surface truncate">12-Seater Executive Sprinter</span>
+</div>
+<div class="flex items-center gap-1.5 min-w-0">
+<span class="material-symbols-outlined text-on-surface-variant text-base">alt_route</span>
+<span class="font-label-sm text-label-sm text-on-surface truncate">Via Durham (55 min)</span>
+</div>
+</div>
+<div class="mt-2.5 flex items-center gap-1.5 px-2.5 py-1.5 bg-surface-container rounded-lg text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-base">luggage</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Standard Overhead &amp; Trunk Luggage Only</span>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-base">shield</span>
+<span class="status-summary">Fallback Instant-Reserve Locked</span>
+</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-2 py-1 rounded">Zone C Bay 1</span>
+</div>
+</article>
+</div>
+<div class="w-full bg-surface-container rounded-xl p-space-md shadow-sm flex items-start gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-surface-container-highest flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-lg">verified_user</span>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="font-label-lg text-label-lg text-on-surface font-semibold">Anti-Overbooking Guarantee</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-xs mt-1 leading-relaxed">
+        Submitting ranked choices initiates allocation. Seats are reserved atomically with cryptographic lock to eliminate double-booking or physical platform stampedes.
+      </p>
+</div>
+</div>
+<div class="pt-space-xs pb-space-sm">
+<button class="w-full min-h-[52px] bg-primary hover:bg-primary-container text-on-primary rounded-xl font-label-lg text-label-lg font-semibold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.99] transition-all" id="confirm-selection-btn" type="button">
+<span>Confirm Preferences &amp; Join Allocation Queue</span>
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+<p class="font-label-sm text-label-sm text-center text-on-surface-variant mt-2">
+      Zero charge for rebooking • Passholder protection ID #TSN-8941
+    </p>
+</div>
+</div>
+<script>
+  (function() {
+    let secondsLeft = 258;
+    const countdownEl = document.getElementById('countdown-timer');
+    if (countdownEl) {
+      setInterval(function() {
+        if (secondsLeft > 0) {
+          secondsLeft--;
+          const m = String(Math.floor(secondsLeft / 60)).padStart(2, '0');
+          const s = String(secondsLeft % 60).padStart(2, '0');
+          countdownEl.textContent = m + ':' + s;
+        }
+      }, 1000);
+    }
+
+    const swapBtn = document.getElementById('swap-ranks-btn');
+    const container = document.getElementById('cards-container');
+    const cardA = document.getElementById('card-choice-a');
+    const cardB = document.getElementById('card-choice-b');
+
+    let isSwapped = false;
+
+    if (swapBtn && container && cardA && cardB) {
+      swapBtn.addEventListener('click', function() {
+        isSwapped = !isSwapped;
+        
+        const badgeA = document.getElementById('badge-a');
+        const badgeB = document.getElementById('badge-b');
+        const textA = badgeA.querySelector('.rank-text');
+        const textB = badgeB.querySelector('.rank-text');
+
+        if (isSwapped) {
+          container.insertBefore(cardB, swapBtn.parentElement);
+          container.appendChild(cardA);
+
+          badgeB.className = "inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold shadow-sm";
+          badgeA.className = "inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md font-semibold";
+          
+          textB.textContent = "Rank #1 Choice";
+          textA.textContent = "Rank #2 Choice";
+
+          cardB.querySelector('.status-summary').textContent = "Active Primary Allocation";
+          cardA.querySelector('.status-summary').textContent = "Fallback Instant-Reserve Locked";
+        } else {
+          container.insertBefore(cardA, swapBtn.parentElement);
+          container.appendChild(cardB);
+
+          badgeA.className = "inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold shadow-sm";
+          badgeB.className = "inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md font-semibold";
+          
+          textA.textContent = "Rank #1 Choice";
+          textB.textContent = "Rank #2 Choice";
+
+          cardA.querySelector('.status-summary').textContent = "Active Primary Allocation";
+          cardB.querySelector('.status-summary').textContent = "Fallback Instant-Reserve Locked";
+        }
+
+        swapBtn.classList.add('rotate-180');
+        setTimeout(function() {
+          swapBtn.classList.remove('rotate-180');
+        }, 300);
+      });
+    }
+
+    const confirmBtn = document.getElementById('confirm-selection-btn');
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', function() {
+        confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-lg">sync</span> <span>Locking Cryptographic Token...</span>';
+        confirmBtn.classList.add('opacity-90');
+        setTimeout(function() {
+          confirmBtn.innerHTML = '<span class="material-symbols-outlined text-lg">task_alt</span> <span>Queue Locked! Redirecting...</span>';
+          confirmBtn.classList.replace('bg-primary', 'bg-tertiary');
+        }, 1200);
+      });
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-lowest/95 backdrop-blur-xl shadow-[0_-2px_12px_rgba(15,23,42,0.06)]" data-active-classes="text-primary font-semibold"><div class="flex justify-around items-center h-20 px-space-xs max-w-md mx-auto"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="incident-check-in" href="#"><span class="material-symbols-outlined text-xl mb-0.5">how_to_reg</span><span class="font-label-sm text-[10px] leading-tight text-center">Check-In</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 transition-colors text-primary font-semibold" data-path="ranked-options" href="#"><span class="material-symbols-outlined text-xl mb-0.5">alt_route</span><span class="font-label-sm text-[10px] leading-tight text-center">Options</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="allocation-queue" href="#"><span class="material-symbols-outlined text-xl mb-0.5">pending_actions</span><span class="font-label-sm text-[10px] leading-tight text-center">Queue</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="confirmed-ticket" href="#"><span class="material-symbols-outlined text-xl mb-0.5">confirmation_number</span><span class="font-label-sm text-[10px] leading-tight text-center">Ticket</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="carpool-fallback" href="#"><span class="material-symbols-outlined text-xl mb-0.5">directions_car</span><span class="font-label-sm text-[10px] leading-tight text-center">Carpool</span></a></div></nav></body></html>

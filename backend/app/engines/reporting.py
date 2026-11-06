@@ -185,6 +185,34 @@ def heatmap(db: Session, net: Network, *, disruption_id=None, destination=None, 
     }
 
 
+# ---------------------------------------------------------------- corridor pools
+def corridor_pools(db: Session, net: Network) -> list[dict]:
+    """Tier-2 demand, aggregated by pickup zone, destination zone and departure hour. Counts only,
+    so it is safe to show to passengers and community drivers."""
+    if not db.query(AllocationRun).first():
+        return []
+    journeys = affected_journeys(db)
+    st = states(db, journeys)
+    proposed = {m.journey_id for m in db.query(CarpoolMatchMember).join(CarpoolMatch)
+                .filter(CarpoolMatch.status.in_(PENDING_MATCH), CarpoolMatchMember.acceptance != "declined")}
+    pools: dict = {}
+    for j in journeys:
+        if st[j.id] not in ("unresolved", "carpool_confirmed") or (j.carpool_opt_out and st[j.id] == "unresolved"):
+            continue
+        origin, dest = net.stops[j.origin_stop].zone, net.stops[j.dest_stop].zone
+        p = pools.setdefault((origin, dest, j.dep_latest // 60), {
+            "pickup_zone": origin, "destination_zone": dest, "passengers": 0, "waiting": 0, "proposed": 0,
+            "confirmed": 0, "window_start": j.dep_earliest, "window_end": j.dep_latest})
+        p["passengers"] += j.party_size
+        bucket = "confirmed" if st[j.id] == "carpool_confirmed" else "proposed" if j.id in proposed else "waiting"
+        p[bucket] += j.party_size
+        p["window_start"] = min(p["window_start"], j.dep_earliest)
+        p["window_end"] = max(p["window_end"], j.dep_latest)
+    ordered = sorted(pools.values(), key=lambda p: (-p["passengers"], p["pickup_zone"], p["destination_zone"]))
+    return [{"label": f"Corridor {n}", "name": f"{p['pickup_zone']} to {p['destination_zone']}", **p}
+            for n, p in enumerate(ordered, 1)]
+
+
 # ---------------------------------------------------------------- metrics
 def integrity(db: Session) -> dict:
     """Independently reconciles seat accounting. `over_allocated` must always be zero."""

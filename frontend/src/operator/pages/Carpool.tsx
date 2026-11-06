@@ -47,7 +47,7 @@ export default function Carpool() {
           ) : <Empty>Listings appear after official seats are reserved and demand remains.</Empty>}
         </Panel>
 
-        <div className="grid gap-3 xl:grid-cols-2">
+        <div className="grid gap-3 2xl:grid-cols-2">
           <Panel title="Offers" flush>
             {data.offers.length ? (
               <table className="op-table">

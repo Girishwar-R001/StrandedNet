@@ -1,7 +1,8 @@
+import asyncio
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
@@ -30,14 +31,48 @@ app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins.split(","
                    allow_methods=["*"], allow_headers=["*"])
 
 
-@app.middleware("http")
-async def notify_clients(request: Request, call_next):
-    """Handlers commit before returning, so any successful write means both dashboards
-    should refresh. One place, so no endpoint can forget."""
-    response = await call_next(request)
-    if request.method != "GET" and response.status_code < 400 and request.url.path.startswith("/api"):
-        await common.hub.broadcast()
-    return response
+class RequestGate:
+    """Bounds API requests in flight, and tells dashboards when something changed.
+
+    A request holds its database connection until its session closes, and closing needs a worker
+    thread. Unbounded, a crowd fills every thread with requests waiting for a connection while
+    the connection holders wait for a thread, and the server freezes with idle CPU. Admitting no
+    more requests than there are connections makes that wait impossible.
+
+    Handlers commit before returning, so any successful write means dashboards should refresh.
+    One place, so no endpoint can forget. Written as plain ASGI so it adds no per-request task.
+    """
+
+    def __init__(self, inner):
+        self.inner = inner
+        self.gate: asyncio.Semaphore | None = None
+        self.loop: asyncio.AbstractEventLoop | None = None
+
+    def _semaphore(self) -> asyncio.Semaphore:
+        loop = asyncio.get_running_loop()
+        if self.loop is not loop:  # A semaphore belongs to one event loop; test clients each start their own.
+            self.loop, self.gate = loop, asyncio.Semaphore(settings.max_concurrent_requests)
+        return self.gate
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http" or not scope["path"].startswith("/api"):
+            await self.inner(scope, receive, send)
+            return
+        status = 500
+
+        async def capture(message):
+            nonlocal status
+            if message["type"] == "http.response.start":
+                status = message["status"]
+            await send(message)
+
+        async with self._semaphore():
+            await self.inner(scope, receive, capture)
+        if scope["method"] != "GET" and status < 400:
+            await common.hub.broadcast()
+
+
+app.add_middleware(RequestGate)
 
 
 for module in (common, passenger, carpool, operator, demo):

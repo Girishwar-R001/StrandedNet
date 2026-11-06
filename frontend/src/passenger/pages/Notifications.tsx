@@ -2,9 +2,10 @@ import { Bell, CircleCheck, TriangleAlert } from 'lucide-react'
 import { useEffect } from 'react'
 import { pxApi, useLive } from '../../lib/api'
 import { timeAgo } from '../../lib/format'
+import { IconTile, type Tone } from '../ui'
 
 const ICON = { success: CircleCheck, warning: TriangleAlert, info: Bell } as const
-const COLOR = { success: 'text-px-accent', warning: 'text-px-warn', info: 'text-px-info' } as const
+const TONE: Record<string, Tone> = { success: 'good', warning: 'warn', info: 'info' }
 
 export default function Notifications() {
   const { data } = useLive(pxApi, '/me/notifications')
@@ -21,13 +22,12 @@ export default function Notifications() {
     <div className="grid gap-4">
       <h1 className="text-2xl font-semibold tracking-tight">Updates</h1>
       {data?.length === 0 && <p className="text-px-muted">Nothing yet. We'll let you know as soon as anything changes.</p>}
-      <ul className="grid gap-px overflow-hidden rounded-xl border border-px-line bg-px-line">
+      <ul className="grid gap-3">
         {data?.map((n: any) => {
           const kind = n.kind as keyof typeof ICON
-          const Icon = ICON[kind] ?? Bell
           return (
-            <li key={n.id} className="flex gap-3 bg-px-card p-4">
-              <Icon size={20} className={`mt-0.5 shrink-0 ${COLOR[kind] ?? ''}`} />
+            <li key={n.id} className={`flex gap-3 rounded-2xl p-4 shadow-card ${n.read ? 'bg-px-card' : 'bg-px-low'}`}>
+              <IconTile icon={ICON[kind] ?? Bell} tone={TONE[kind] ?? 'info'} />
               <div className="min-w-0 flex-1">
                 <div className="flex items-baseline justify-between gap-3">
                   <p className={n.read ? 'font-medium' : 'font-semibold'}>{n.title}</p>

@@ -1,0 +1,76 @@
+You are a Principal Systems Engineer refactoring "The Stranded Network" (FastAPI + React/TypeScript + Tailwind) to survive two hackathon constraint stress-tests:
+1. Constraint 10 (Faulty Telemetry): Injected feeds with spikes, repeated duplicates, delayed values, and conflicting occupancy/GPS readings.
+2. Constraint 2 (3x Traffic Spike + 50% Compute Reduction): Inbound demand triples (72 concurrent requests) while server compute power is halved, requiring aggressive load shedding and algorithmic downshifting from O(N²) to O(N) corridor hashing without dropping atomic seat locks.
+
+Implement the following backend services, simulation routers, and frontend UI components cleanly into the existing project structure.
+
+---
+
+### Part 1: Backend Telemetry Sanitization & Validation (FastAPI)
+Create or update `backend/services/telemetry_sanitizer.py`:
+- Inbound Payload: `{ vehicle_id: str, reported_seats: int, latitude: float, longitude: float, timestamp: float, sequence_id: str }`.
+- Deduplication & Idempotency: Maintain an in-memory/Redis LRU cache of `(vehicle_id, sequence_id)` or payload hashes over the last 15 seconds. Drop identical duplicate packets immediately.
+- Clamping & Anomaly Rejection: Validate `reported_seats` against static `Vehicle.capacity`. If `reported_seats > capacity` or `reported_seats < 0`:
+  * Discard the anomalous seat count.
+  * Log a structured warning in the `AuditLog` table: `[WARN] Sensor spike rejected on Vehicle {vehicle_id}. Clamped to DB ledger state.`
+  * Retain existing locked seat count from the database ACID ledger.
+- GPS Dead-Reckoning Fallback: If telemetry is missing or delayed (>30s), interpolate vehicle coordinates along the pre-calculated polyline route and tag vehicle state with `telemetry_status="STALE_DEAD_RECKONING"`.
+
+---
+
+### Part 2: High-Concurrency Adaptive Engine & Load Shedding (FastAPI)
+Create or update `backend/services/allocation_engine.py`:
+- Compute Mode Toggle: Add an application-level state flag `COMPUTE_MODE = "NORMAL" | "THROTTLED_50"`.
+- Fast-Path Ingestion (Decoupling):
+  * When `COMPUTE_MODE == "THROTTLED_50"` and traffic spikes, the passenger intake endpoint `/api/passengers/submit` must NEVER run synchronous distance-matrix routing calculations.
+  * Instead, do a lightweight write (`status="QUEUED"`) and return `202 Accepted` with `<50ms` latency.
+- Algorithmic Downshifting:
+  * In `NORMAL` mode: Run multi-factor weighted scoring with full pairwise distance calculations.
+  * In `THROTTLED_50` mode: Downshift to an `O(N)` Geohash / Corridor Bucketing algorithm. Group passengers into predefined corridor buckets (e.g., `BUCKET_NORTH_TO_CENTRAL`) via a single hash-map lookup:
+    ```python
+    def corridor_hash(origin_lat, origin_lng, dest_lat, dest_lng):
+        return f"{round(origin_lat, 2)}_{round(origin_lng, 2)}->{round(dest_lat, 2)}_{round(dest_lng, 2)}"
+    ```
+- Load Shedding:
+  * Throttle WebSocket push frequency from 1s to 5s.
+  * Use cached routing polylines rather than live external API calls.
+  * Ring-fence compute solely for PostgreSQL/SQLite atomic seat reservation transactions (`SELECT ... FOR UPDATE` or serializable isolation) to guarantee an Over-Allocation rate of strictly 0%.
+- Automatic Rollover: Any passenger unable to secure the 10 official seats immediately transitions to `status="CARPOOL_UNMET_DEMAND"` for community clustering.
+
+---
+
+### Part 3: Simulation Stress-Test API Endpoints
+In `backend/routers/simulation.py`, expose:
+1. `POST /api/sim/reset`: Resets DB to initial state.
+2. `POST /api/sim/inject-telemetry-faults`:
+   * Injects an anomalous payload where an 8-seater bus reports 95 seats.
+   * Injects 3 duplicate packets.
+   * Simulates a 60-second GPS signal drop on Vehicle B.
+3. `POST /api/sim/trigger-surge-and-throttle`:
+   * Sets `COMPUTE_MODE = "THROTTLED_50"`.
+   * Injects 72 simultaneous passenger records along 2 primary corridors.
+   * Disables 50% of the fleet (leaving 10 official seats).
+   * Automatically runs downshifted batch allocation and populates the carpool queue with the remaining 62 travellers.
+
+---
+
+### Part 4: Frontend UI Updates (React + Tailwind CSS)
+In `frontend/src/components/OperatorDashboard.tsx`:
+1. Simulation Control Bar (Top Bar):
+   * Button: `[ Load Baseline (24 Pax / 20 Seats) ]`
+   * Button: `[ Inject Sensor Spike (Constraint 10) ]` (Triggers `POST /api/sim/inject-telemetry-faults`)
+   * Button: `[ 3x Surge + 50% Compute Throttle ]` (Triggers `POST /api/sim/trigger-surge-and-throttle`)
+   * Button: `[ Reset Demo ]`
+2. Server Health & Stress Telemetry Widget:
+   * Show a dynamic status card displaying:
+     - **Compute Pool:** `NORMAL (100%)` vs `CONSTRAINED (50% Throttled)` (amber alert styling when throttled).
+     - **Optimization Strategy:** `O(N²) Pairwise Routing` vs `O(N) Corridor Geohash Bucketing`.
+     - **P99 Response Time:** Display dynamic simulated latency (`~42ms` queued, `<180ms` overall).
+     - **Over-Allocation Count:** Prominently display `0 (Guaranteed by ACID Lock)`.
+3. Live Audit Log Updates:
+   * Render real-time colored badge logs when simulation events fire:
+     - `[SANITIZER] Anomaly blocked: Vehicle A reported 95 seats. Clamped to 8.`
+     - `[ADAPTIVE] Compute constrained by 50%. Algorithmic complexity downshifted to O(N).`
+     - `[SURGE] Ingested 72 concurrent requests. 10 seated officially; 62 rolled over to Carpool corridors.`
+
+Ensure all types in TypeScript and Pydantic models match the existing schema, code is runnable without external paid API keys, and zero mock data causes compile-time errors.

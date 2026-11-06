@@ -11,7 +11,7 @@ from ..models import (Allocation, CarpoolMatch, CarpoolMatchMember, CarpoolReque
                       Stop, User, Vehicle, utcnow)
 from ..schemas import JourneyIn, PreferenceIn, ReasonIn, SelfResolve
 from ..security import require_passenger
-from ..services import audit, now_min
+from ..services import audit, get_setting, now_min
 
 router = APIRouter(prefix="/api/me", tags=["passenger"])
 
@@ -249,6 +249,14 @@ def disruptions(_: User = Depends(require_passenger), db: Session = Depends(get_
     rows = db.query(Disruption).filter_by(status="active").order_by(Disruption.id.desc()).all()
     return [{"code": d.code, "kind": d.kind, "description": d.description, "start_min": d.start_min,
              "est_end_min": d.est_end_min} for d in rows]
+
+
+@router.get("/surge")
+def surge(_: User = Depends(require_passenger), db: Session = Depends(get_db)):
+    """Aggregated counts only, for the mobilisation banner."""
+    scenario = get_setting(db, "scenario", {})
+    pools = reporting.corridor_pools(db, Network.load(db)) if scenario.get("name") == "surge" else []
+    return {"active": bool(pools), "pooled": sum(p["passengers"] for p in pools), "corridors": pools}
 
 
 @router.get("/notifications")

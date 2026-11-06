@@ -6,14 +6,15 @@ from ..database import get_db
 from ..engines import allocation as alloc_engine
 from ..engines import carpool as cp
 from ..engines import disruption as dis
-from ..engines import grouping, reporting
+from ..engines import grouping, reporting, scenarios, telemetry
 from ..engines.allocation import ReservationError
 from ..engines.feasibility import assess_vehicle
 from ..engines.network import Network
 from ..models import (ACTIVE_ALLOCATION, Allocation, AllocationRun, AuditEvent, CarpoolRequest,
                       CarpoolRequestMember, Disruption, Journey, JourneyOption, PassengerGroup,
                       Stop, User, Vehicle)
-from ..schemas import DisruptionIn, OverrideIn, ReasonIn, ReassignIn, RulesIn, VehicleIn, VehicleStatusIn
+from ..schemas import (ConflictDecisionIn, DisruptionIn, OverrideIn, ReasonIn, ReassignIn, RulesIn,
+                       TelemetryIn, VehicleIn, VehicleStatusIn)
 from ..security import require_operator
 from ..services import audit, notify, now_min, put_setting, thresholds, weights
 
@@ -63,6 +64,39 @@ def overview(db: Session = Depends(get_db)):
 @router.get("/metrics")
 def metrics(db: Session = Depends(get_db)):
     return {**reporting.metrics(db), "integrity": reporting.integrity(db)}
+
+
+@router.get("/stress")
+def stress(db: Session = Depends(get_db)):
+    return scenarios.status(db)
+
+
+# ---------------------------------------------------------------- telemetry
+@router.post("/telemetry/ingest")
+def ingest_telemetry(body: TelemetryIn, user: User = Depends(require_operator), db: Session = Depends(get_db)):
+    try:
+        result = telemetry.ingest(db, body.model_dump(exclude_none=True), Network.load(db), user)
+    except ValueError as e:
+        raise HTTPException(404, str(e))
+    db.commit()
+    return result
+
+
+@router.post("/telemetry/{vehicle_id}/resolve")
+def resolve_telemetry(vehicle_id: str, body: ConflictDecisionIn, user: User = Depends(require_operator),
+                      db: Session = Depends(get_db)):
+    v = db.get(Vehicle, vehicle_id)
+    if not v:
+        raise HTTPException(404, "Vehicle not found")
+    try:
+        telemetry.resolve_conflict(db, v, body.reason, user)
+    except ValueError as e:
+        raise HTTPException(409, str(e))
+    if body.decision == "withdraw":
+        dis.create(db, kind="vehicle_unavailable", actor=user, vehicle_id=v.id,
+                   description=f"{v.id} confirmed offline by operator after sensor conflict")
+    db.commit()
+    return {"ok": True}
 
 
 # ---------------------------------------------------------------- disruptions

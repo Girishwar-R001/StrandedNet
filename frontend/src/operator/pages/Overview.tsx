@@ -6,9 +6,9 @@ import { Empty, Loading, PageHeader, Panel, Stat, StatRow } from '../ui'
 
 const SEGMENTS = [
   { key: 'official_confirmed', label: 'Seat confirmed', color: 'var(--color-op-good)' },
-  { key: 'carpool_confirmed', label: 'Carpool confirmed', color: '#2f8f8f' },
+  { key: 'carpool_confirmed', label: 'Carpool confirmed', color: '#35a58a' },
   { key: 'approved', label: 'Approved', color: 'var(--color-op-info)' },
-  { key: 'proposed', label: 'Proposed', color: '#47628f' },
+  { key: 'proposed', label: 'Proposed', color: '#7fb3e0' },
   { key: 'needs_review', label: 'Needs review', color: 'var(--color-op-signal)' },
   { key: 'self_resolved', label: 'Self-resolved', color: 'var(--color-op-faint)' },
   { key: 'unresolved', label: 'Unresolved', color: 'var(--color-op-bad)' },
@@ -26,7 +26,7 @@ function RecoveryBar({ byState, total }: { byState: Record<string, number>; tota
       <dl className="mt-2.5 flex flex-wrap gap-x-5 gap-y-1">
         {present.map((s) => (
           <div key={s.key} className="flex items-center gap-1.5 text-xs">
-            <span className="size-2 rounded-[1px]" style={{ background: s.color }} />
+            <span className="size-2 rounded-sm" style={{ background: s.color }} />
             <dt className="text-op-muted">{s.label}</dt>
             <dd className="num">{byState[s.key]}</dd>
           </div>
@@ -101,9 +101,9 @@ export default function Overview() {
                 <ResponsiveContainer width="100%" height={Math.max(150, data.by_destination.length * 28)}>
                   <BarChart data={data.by_destination} layout="vertical" margin={{ left: 0, right: 12, top: 0, bottom: 0 }}>
                     <XAxis type="number" hide allowDecimals={false} />
-                    <YAxis dataKey="name" type="category" width={132} tickLine={false} axisLine={false} tick={{ fill: '#8d939c', fontSize: 11 }} />
-                    <Tooltip cursor={{ fill: '#1b1f24' }} contentStyle={{ background: '#1b1f24', border: '1px solid #363c44', borderRadius: 3, fontSize: 12 }} labelStyle={{ color: '#e4e6e9' }} itemStyle={{ color: '#e4e6e9' }} />
-                    <Bar dataKey="passengers" name="Passengers" fill="#6c9eeb" barSize={12} radius={[0, 2, 2, 0]} isAnimationActive={false} />
+                    <YAxis dataKey="name" type="category" width={132} tickLine={false} axisLine={false} tick={{ fill: '#3f4850', fontSize: 11 }} />
+                    <Tooltip cursor={{ fill: '#eff4ff' }} contentStyle={{ background: '#fff', border: '1px solid #dbe3f0', borderRadius: 8, fontSize: 12 }} labelStyle={{ color: '#0d1c2f' }} itemStyle={{ color: '#0d1c2f' }} />
+                    <Bar dataKey="passengers" name="Passengers" fill="#006194" barSize={12} radius={[0, 2, 2, 0]} isAnimationActive={false} />
                   </BarChart>
                 </ResponsiveContainer>
               ) : <Empty>No demand yet.</Empty>}
@@ -123,7 +123,7 @@ export default function Overview() {
                       </div>
                       <div className="mt-1 flex gap-0.5">
                         {Array.from({ length: v.capacity }, (_, i) => (
-                          <span key={i} className={`h-2 flex-1 rounded-[1px] ${i < used ? 'bg-op-good' : 'bg-op-raised'}`} />
+                          <span key={i} className={`h-2 flex-1 rounded-sm ${i < used ? 'bg-op-good' : 'bg-op-raised'}`} />
                         ))}
                       </div>
                     </li>
@@ -165,7 +165,7 @@ export default function Overview() {
             <ol className="grid gap-px">
               {steps.map((step: any, i: number) => (
                 <li key={step.title}>
-                  <Link to={step.link} className={`flex items-start gap-2 rounded-[3px] px-1.5 py-1 hover:bg-op-raised ${step.state === 'next' ? 'bg-op-raised' : ''}`}>
+                  <Link to={step.link} className={`flex items-start gap-2 rounded-lg px-1.5 py-1 hover:bg-op-raised ${step.state === 'next' ? 'bg-op-raised' : ''}`}>
                     <span className="mt-0.5 shrink-0">
                       {step.state === 'done' ? <Check size={13} className="text-op-good" />
                         : step.state === 'next' ? <CircleDot size={13} className="text-op-signal" />

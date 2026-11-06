@@ -43,7 +43,7 @@ export default function Preferences() {
         <Stat label="No chosen option feasible" value={data.rows.filter((r: any) => r.state === 'none_feasible').length} />
       </StatRow>
 
-      <div className="mt-3 grid gap-3 xl:grid-cols-[1fr_340px]">
+      <div className="mt-3 grid gap-3 2xl:grid-cols-[1fr_340px]">
         <Panel
           title="By party" flush
           action={
@@ -80,8 +80,8 @@ export default function Preferences() {
                     <span className="min-w-0 truncate">{o.label}</span>
                     <span className="num shrink-0">{o.passengers}</span>
                   </div>
-                  <div className="mt-1 h-1.5 rounded-[1px] bg-op-raised">
-                    <div className={`h-full rounded-[1px] ${o.reservable ? 'bg-op-info' : 'bg-op-faint'}`} style={{ width: `${(100 * o.passengers) / max}%` }} />
+                  <div className="mt-1 h-1.5 rounded-sm bg-op-raised">
+                    <div className={`h-full rounded-sm ${o.reservable ? 'bg-op-info' : 'bg-op-faint'}`} style={{ width: `${(100 * o.passengers) / max}%` }} />
                   </div>
                   <p className="mt-0.5 text-[11px] text-op-muted">{o.first} first, {o.second} second · {o.availability}</p>
                 </li>

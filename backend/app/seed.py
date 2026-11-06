@@ -4,15 +4,18 @@ A fictional transport network drawn over real Bengaluru geography. Stop position
 approximate real locations, but every service, timetable, vehicle, passenger and travel time
 is simulated. No real operator's data is used.
 
-Scenario shape: 24 affected passengers in 14 parties, 3 vehicles (8 + 7 + 5 = 20 seats).
-Demand is deliberately uneven, so the engine must leave seats empty rather than force bad fits:
-  * East corridor wants 12 seats, but only RV-1 (8) serves it.
-  * P-13 and P-14 cannot use any replacement run at all.
+Baseline shape: 24 affected passengers in 14 parties, 3 vehicles (8 + 7 + 5 = 20 seats).
+All 20 seats fill and 4 passengers roll over to one community carpool corridor:
+  * East corridor wants 12 seats, but only RV-1 (8) serves it, so four Hebbal to Whitefield
+    passengers (P-01, P-02, P-14) miss out and share one carpool.
   * P-10 uses a wheelchair; only RV-3 is suitable.
-  * P-10 and P-13 share a destination name but approach from opposite directions.
   * P-05, a party of 4, reports late and has no walk-up alternative that arrives in time. A
     first-come queue strands them; priority-aware allocation does not. This case is designed
     to show the difference, and the baseline is recomputed live on every run.
+
+Surge shape (`seed(db, surge=True)`): the same people and vehicles, with demand tripled to 72
+passengers on four corridors. Named demo accounts stay signed in and usable; the extra parties
+are simulated accounts under SIM_DOMAIN, which the demo login list leaves out.
 """
 import random
 
@@ -24,6 +27,7 @@ from .security import hash_password
 from .services import (DEFAULT_THRESHOLDS, DEFAULT_WEIGHTS, SIM_START_MIN, audit, put_setting)
 
 DEMO_PASSWORD = "demo1234"
+SIM_DOMAIN = "sim.stranded.demo"
 
 
 def hm(text: str) -> int:
@@ -84,16 +88,34 @@ PARTIES = [
     ("P-03", "Fatima Khan", "SBC", "WFD", 3, "18:05", "18:35", "19:40", 45, 500, ["luggage"], "17:15"),
     ("P-04", "Daniel Dsouza", "MGR", "IND", 1, "18:15", "18:45", "18:55", 40, 500, [], "17:25"),
     ("P-05", "Lakshmi Iyer", "IND", "WFD", 4, "18:25", "18:55", "19:15", 45, 500, [], "17:33"),
-    ("P-06", "Sanjay Gowda", "DOM", "MAR", 1, "18:25", "18:50", "19:20", 45, 1500, [], "17:35"),
+    ("P-06", "Sanjay Gowda", "SBC", "BSK", 1, "18:20", "18:50", "19:20", 45, 1500, [], "17:35"),
     ("P-07", "Priya Nair", "MGR", "ECY", 2, "18:00", "18:25", "19:15", 40, 500, [], "17:05"),
     ("P-08", "Imran Sheikh", "KOR", "ECY", 3, "18:10", "18:40", "19:10", 40, 500, [], "17:12"),
     ("P-09", "Neha Kulkarni", "KOR", "SLK", 1, "18:10", "18:35", "18:45", 40, 500, [], "17:28"),
     ("P-10", "George Thomas", "YEL", "SBC", 2, "17:45", "18:15", "18:45", 45, 0, ["wheelchair"], "17:00"),
     ("P-11", "Kavya Reddy", "HEB", "JAY", 1, "18:00", "18:20", "19:05", 40, 500, ["step_free"], "17:18"),
     ("P-12", "Rahul Shetty", "HEB", "BSK", 1, "18:00", "18:25", "19:15", 40, 500, [], "17:22"),
-    ("P-13", "Anita Joseph", "WFD", "SBC", 1, "17:55", "18:20", "19:30", 45, 500, [], "17:32"),
-    ("P-14", "Harish Babu", "HEB", "ECY", 1, "18:00", "18:30", "19:30", 45, 500, [], "17:26"),
+    ("P-13", "Anita Joseph", "MGR", "SLK", 1, "18:00", "18:25", "19:30", 45, 500, [], "17:32"),
+    ("P-14", "Harish Babu", "HEB", "WFD", 1, "17:50", "18:20", "20:00", 45, 500, [], "17:36"),
 ]
+
+# Surge: named parties move onto one of the four corridors, keeping their party and needs.
+SURGE_ROUTES = {
+    "P-05": ("MGR", "WFD", "18:15", "18:45", "19:40"),
+    "P-06": ("MGR", "ECY", "18:00", "18:25", "19:20"),
+    "P-08": ("MGR", "ECY", "18:00", "18:25", "19:15"),
+    "P-09": ("MGR", "SLK", "18:00", "18:25", "19:15"),
+    "P-10": ("YEL", "JAY", "17:45", "18:15", "19:00"),
+}
+
+# corridor origin, destination, window, latest arrival, extra passengers to reach the 3x total
+SURGE_CORRIDORS = [
+    ("HEB", "WFD", "17:50", "18:20", "19:40", 14),   # North to East
+    ("SBC", "WFD", "18:05", "18:35", "19:50", 13),   # Central to East
+    ("MGR", "ECY", "18:00", "18:25", "19:30", 7),    # Central to South
+    ("HEB", "JAY", "18:00", "18:25", "19:30", 14),   # North to South
+]
+SURGE_PARTY_SIZES = (2, 1, 3, 1, 2)
 
 # On other services, so must stay unaffected. They prove the cancellation is targeted.
 UNAFFECTED = [
@@ -118,7 +140,26 @@ def clear(db: Session) -> None:
     db.commit()
 
 
-def seed(db: Session) -> None:
+def _surge_rows() -> list[tuple]:
+    rows = []
+    for row in PARTIES:
+        ref, name, origin, dest, size, lo, hi, latest, wait, walk, reqs, reported = row
+        if ref in SURGE_ROUTES:
+            origin, dest, lo, hi, latest = SURGE_ROUTES[ref]
+        rows.append((ref, name, origin, dest, size, lo, hi, latest, wait, walk, reqs, reported, "X5"))
+    n = 0
+    for origin, dest, lo, hi, latest, extra in SURGE_CORRIDORS:
+        while extra:
+            size = min(SURGE_PARTY_SIZES[n % len(SURGE_PARTY_SIZES)], extra)
+            extra -= size
+            n += 1
+            reported = f"17:{10 + (n * 7) % 28:02d}"
+            rows.append((f"S-{n:02d}", f"Surge traveller {n}", origin, dest, size, lo, hi, latest, 45, 500,
+                         ["luggage"] if n % 6 == 0 else [], reported, "X5"))
+    return rows
+
+
+def seed(db: Session, surge: bool = False) -> None:
     rng = random.Random(42)
     pw = hash_password(DEMO_PASSWORD)  # one hash for every demo user keeps resets fast
 
@@ -146,9 +187,10 @@ def seed(db: Session) -> None:
         db.add(User(email=email, password_hash=pw, name=name, phone=phone,
                     rides_completed=rides, member_since=since))
 
-    rows = [(*p, "X5") for p in PARTIES] + UNAFFECTED
+    rows = (_surge_rows() if surge else [(*p, "X5") for p in PARTIES]) + UNAFFECTED
     for n, (ref, name, origin, dest, size, lo, hi, latest, wait, walk, reqs, reported, svc) in enumerate(rows):
-        user = User(email=_email(name), password_hash=pw, name=name,
+        email = f"{ref.lower()}@{SIM_DOMAIN}" if ref.startswith("S-") else _email(name)
+        user = User(email=email, password_hash=pw, name=name,
                     phone=f"+91 90000 {n + 1:05d}", member_since="2025")
         db.add(user)
         db.flush()
@@ -162,6 +204,6 @@ def seed(db: Session) -> None:
     db.commit()
 
 
-def reset(db: Session) -> None:
+def reset(db: Session, surge: bool = False) -> None:
     clear(db)
-    seed(db)
+    seed(db, surge)
