@@ -7,3 +7,6 @@ __pycache__/
 .env
 node_modules/
 dist/
+prompt.md
+prompt3.txt
+promptnew.md
